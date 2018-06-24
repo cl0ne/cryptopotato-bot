@@ -28,10 +28,10 @@ def help(bot, update):
 def me_command(bot, update):
     """Show message about sender."""
     status = update.message.text_html.split(None, 1)[1:]
-    if status:
-        name = '<b>***{}</b>'.format(update.effective_user.full_name)
-        text = '{} {}'.format(name, status[0])
-        update.message.reply_html(text, quote=False, disable_web_page_preview=True)
+    status = status[0] if status else 'totally forgot what he wanted to write about'
+    name = '<b>***{}</b>'.format(update.effective_user.full_name)
+    text = '{} {}'.format(name, status)
+    update.message.reply_html(text, quote=False, disable_web_page_preview=True)
 
 
 def error(bot, update, error):
