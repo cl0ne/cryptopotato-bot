@@ -1,8 +1,8 @@
 FROM python:3-alpine AS builder
 
-COPY . /bot
+COPY . /opt/bot
 
-WORKDIR /bot
+WORKDIR /opt/bot
 
 RUN apk upgrade --no-cache \
  && apk add --no-cache alpine-sdk \
@@ -20,17 +20,17 @@ RUN apk upgrade --no-cache \
  && apk add --no-cache bash openssl libffi \
  && adduser potato --disabled-password \
                    --shell /bin/false \
-                   --home /bot \
+                   --home /opt/bot \
                    --no-create-home
 
-WORKDIR /bot
+WORKDIR /opt/bot
 
-COPY --from=builder /bot/entrypoint.sh .
-COPY --from=builder /bot/bot.py .
-COPY --from=builder /bot/venv venv
-COPY --from=builder /bot/LICENSE .
+COPY --from=builder /opt/bot/entrypoint.sh .
+COPY --from=builder /opt/bot/bot.py .
+COPY --from=builder /opt/bot/venv venv
+COPY --from=builder /opt/bot/LICENSE .
 
 USER potato
 
-ENTRYPOINT ["/bot/entrypoint.sh"]
+ENTRYPOINT ["/opt/bot/entrypoint.sh"]
 
