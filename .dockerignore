@@ -34,3 +34,7 @@ build/
 # Misc
 *log
 *.bak
+
+### Git repo
+.git*
+*.md
