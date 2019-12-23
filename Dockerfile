@@ -7,7 +7,7 @@ WORKDIR /bot
 RUN apk upgrade --no-cache \
  && apk add --no-cache alpine-sdk \
                        openssl openssl-dev \
-					   libffi libffi-dev \
+                       libffi libffi-dev \
  && python -m venv venv \
  && . ./venv/bin/activate \
  && pip install -r requirements.txt
@@ -19,9 +19,9 @@ FROM python:3-alpine
 RUN apk upgrade --no-cache \
  && apk add --no-cache bash openssl libffi \
  && adduser potato --disabled-password \
-	               --shell /bin/false \
-				   --home /bot \
-				   --no-create-home
+                   --shell /bin/false \
+                   --home /bot \
+                   --no-create-home
 
 WORKDIR /bot
 
