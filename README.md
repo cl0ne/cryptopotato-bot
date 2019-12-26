@@ -11,6 +11,8 @@ Bot requires authorization token to be set in `BOT_TOKEN` environment variable. 
 * `/me message`
     - Announces sender's actions to the chat, original message will be deleted if bot has enough permissions in the chat
     - Example: `/me hit the wall`
+* `/fortune`
+    - Prints a random epigram, requires `fortune` executable to be present.
 
 ## Planned Features
 * None for now
