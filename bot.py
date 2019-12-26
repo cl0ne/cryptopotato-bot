@@ -6,7 +6,8 @@
 import logging
 import os
 
-from telegram.ext import Updater, CommandHandler
+from telegram import Update, Message
+from telegram.ext import Updater, CommandHandler, CallbackContext
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -15,47 +16,43 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-def start(bot, update):
+def start_callback(update: Update, context: CallbackContext):
     """Send a message when the command /start is issued."""
-    bot.send_message(chat_id=update.message.chat_id, text="I'm a useless bot :)")
+    update.message.reply_text("I'm a useless bot :)", quote=False)
 
 
-def help(bot, update):
+def show_help(update: Update, context: CallbackContext):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('/me - show a message about yourself in the chat')
+    update.message.reply_text('/me - show a message about your actions to the chat')
 
 
-def me_command(bot, update):
-    """Show message about sender."""
-    status = update.message.text_html.split(None, 1)[1:]
+def me_command(update: Update, context: CallbackContext):
+    """Describe sender actions."""
+    message: Message = update.message or update.edited_message
+    status = message.text_html.split(None, 1)[1:]
     status = status[0] if status else 'totally forgot what he wanted to write about'
     name = '<b>***{}</b>'.format(update.effective_user.full_name)
     text = '{} {}'.format(name, status)
-    update.message.reply_html(text, quote=False, disable_web_page_preview=True)
+    message.reply_html(text, quote=False, disable_web_page_preview=True)
 
 
-def error(bot, update, error):
+def error_handler(update: Update, context: CallbackContext):
     """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, error)
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 
 def main():
     """Start the bot."""
-    # Create the EventHandler and pass it your bot's token.
-    updater = Updater(token=os.getenv('BOT_TOKEN'))
+    updater = Updater(token=os.getenv('BOT_TOKEN'), use_context=True)
 
-    # Get the dispatcher to register handlers
-    dp = updater.dispatcher
+    dispatcher = updater.dispatcher
 
-    # on different commands - answer in Telegram
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
-    dp.add_handler(CommandHandler("me", me_command))
+    dispatcher.add_handler(CommandHandler("start", start_callback))
+    dispatcher.add_handler(CommandHandler("help", show_help))
+    dispatcher.add_handler(CommandHandler("me", me_command))
 
-    # log all errors
-    dp.add_error_handler(error)
+    dispatcher.add_error_handler(error_handler)
 
-    # Start the Bot
     updater.start_polling()
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
