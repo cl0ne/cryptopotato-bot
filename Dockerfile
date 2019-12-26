@@ -17,7 +17,7 @@ RUN apk upgrade --no-cache \
 FROM python:3-alpine
 
 RUN apk upgrade --no-cache \
- && apk add --no-cache bash openssl libffi \
+ && apk add --no-cache bash openssl libffi fortune \
  && adduser potato --disabled-password \
                    --shell /bin/false \
                    --home /opt/bot \
