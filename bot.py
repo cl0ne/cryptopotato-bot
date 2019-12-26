@@ -27,13 +27,14 @@ def show_help(update: Update, context: CallbackContext):
 
 
 def me_command(update: Update, context: CallbackContext):
-    """Describe sender actions."""
+    """Announce sender's actions to the chat."""
     message: Message = update.message or update.edited_message
     status = message.text_html.split(None, 1)[1:]
-    status = status[0] if status else 'totally forgot what he wanted to write about'
-    name = '<b>***{}</b>'.format(update.effective_user.full_name)
+    status = status[0] if status else 'completely failed to describe his own actions'
+    name = '<b>***</b>{}'.format(update.effective_user.mention_html())
     text = '{} {}'.format(name, status)
     message.reply_html(text, quote=False, disable_web_page_preview=True)
+    context.bot.delete_message(message.chat_id, message.message_id)
 
 
 def error_handler(update: Update, context: CallbackContext):

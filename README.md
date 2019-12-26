@@ -9,7 +9,7 @@ Bot requires authorization token to be set in `BOT_TOKEN` environment variable. 
 
 ## Current Features
 * `/me message`
-    - Shows a message about yourself in the chat
+    - Announces sender's actions to the chat, original message will be deleted if bot has enough permissions in the chat
     - Example: `/me hit the wall`
 
 ## Planned Features
