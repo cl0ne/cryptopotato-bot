@@ -13,6 +13,8 @@ Bot requires authorization token to be set in `BOT_TOKEN` environment variable. 
     - Example: `/me hit the wall`
 * `/fortune`
     - Prints a random epigram, requires `fortune` executable to be present.
+* `/ping`
+    - Confirms that bot is currently active by responding with 'pong'.
 
 ## Planned Features
-* None for now
+* `/roll` similar to [RollEm Telegram Bot](https://github.com/treetrnk/rollem-telegram-bot)

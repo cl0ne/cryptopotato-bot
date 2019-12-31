@@ -38,6 +38,11 @@ def me_command(update: Update, context: CallbackContext):
     context.bot.delete_message(message.chat_id, message.message_id)
 
 
+def ping_command(update: Update, context: CallbackContext):
+    """Confirm bot's presence in the chat."""
+    update.message.reply_text('Pong!')
+
+
 @run_async
 def fortune_command(update: Update, context: CallbackContext):
     """Get random epigram from `fortune`."""
@@ -62,6 +67,10 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start_callback))
     dispatcher.add_handler(CommandHandler("help", show_help))
     dispatcher.add_handler(CommandHandler("me", me_command))
+
+    ping = CommandHandler("ping", ping_command, filters=~Filters.update.edited_message)
+    dispatcher.add_handler(ping)
+
     fortune = CommandHandler("fortune", fortune_command, filters=~Filters.update.edited_message)
     dispatcher.add_handler(fortune)
 
