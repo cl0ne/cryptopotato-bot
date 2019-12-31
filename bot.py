@@ -17,14 +17,15 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-def start_callback(update: Update, context: CallbackContext):
-    """Send a message when the command /start is issued."""
-    update.message.reply_text("I'm a useless bot :)", quote=False)
-
-
 def show_help(update: Update, context: CallbackContext):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('/me - show a message about your actions to the chat')
+    update.message.reply_markdown(
+        '*Available commands:*\n\n'
+
+        '`/me` - announce your actions to the chat\n'
+        '`/ping` - check if bot is currently active\n'
+        '`/fortune` - get a random epigram'
+    )
 
 
 def me_command(update: Update, context: CallbackContext):
@@ -64,7 +65,6 @@ def main():
 
     dispatcher = updater.dispatcher
 
-    dispatcher.add_handler(CommandHandler("start", start_callback))
     dispatcher.add_handler(CommandHandler("help", show_help))
     dispatcher.add_handler(CommandHandler("me", me_command))
 
