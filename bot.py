@@ -30,7 +30,7 @@ def show_help(update: Update, context: CallbackContext):
 
 def me_command(update: Update, context: CallbackContext):
     """Announce sender's actions to the chat."""
-    message: Message = update.message or update.edited_message
+    message: Message = update.message
     status = message.text_html.split(None, 1)[1:]
     status = status[0] if status else 'completely failed to describe his own actions'
     name = '<b>***</b>{}'.format(update.effective_user.mention_html())
@@ -66,7 +66,9 @@ def main():
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("help", show_help))
-    dispatcher.add_handler(CommandHandler("me", me_command))
+
+    me = CommandHandler("me", me_command, filters=~Filters.update.edited_message)
+    dispatcher.add_handler(me)
 
     ping = CommandHandler("ping", ping_command, filters=~Filters.update.edited_message)
     dispatcher.add_handler(ping)
