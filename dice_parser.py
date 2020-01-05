@@ -1,24 +1,63 @@
 import random
 import re
-from typing import List, Tuple
+from typing import List, Tuple, Optional
+
+
+class ParseError(Exception):
+    def __init__(self):
+        super().__init__('Roll is not in dice notation')
+
+
+class ValueRangeError(ValueError):
+    def __init__(self, arg_name, value,
+                 allowed_range: Optional[Tuple[Optional[int], Optional[int]]] = None):
+        self.arg_name = arg_name
+        self.value = value
+        self.allowed_range = allowed_range
+        super().__init__({
+            'arg_name': arg_name,
+            'value': value,
+            'allowed_range': allowed_range
+        })
+    
+    @property
+    def message(self):
+        if self.allowed_range is None or self.allowed_range == (None, None):
+            return '{arg_name} has unacceptable value: {value}'
+        arg_min, arg_max = self.allowed_range
+        if arg_max is None:
+            return '{arg_name} is less than {allowed_range[0]}: {value}'
+        if arg_min is None:
+            return '{arg_name} is greater than {allowed_range[1]}: {value}'
+        return '{arg_name} is not between {allowed_range[0]} and {allowed_range[1]}: {value}'
+    
+    @property
+    def formatted_message(self):
+        return self.message.format(**self.args[0])
 
 
 class Dice:
-    __r = re.compile(
-        r'(?P<rolls>[1-9]\d*)?'
+    __regex = re.compile(
+        r'(?P<rolls>\d+)?'
         r'd'
-        r'(?P<sides>[1-9]\d*)'
+        r'(?P<sides>\d+)'
     )
-    
+    BIGGEST_DICE = 120
+    ROLL_LIMIT = 100
+
     def __init__(self, rolls, sides):
+        if not(0 < rolls <= self.ROLL_LIMIT):
+            raise ValueRangeError('roll count', rolls, (1, self.ROLL_LIMIT))
+        if not(0 < sides <= self.BIGGEST_DICE):
+            raise ValueRangeError('sides', sides, (1, self.BIGGEST_DICE))
         self.rolls = rolls
         self.sides = sides
-    
+
     @staticmethod
     def parse(roll_str):
-        match = Dice.__r.fullmatch(roll_str)
+        match = Dice.__regex.fullmatch(roll_str)
         if not match:
-            raise ValueError('Roll is not in dice notation')
+            raise ParseError
         rolls, sides = match.groups()
         rolls = int(rolls) if rolls else 1
         sides = int(sides)

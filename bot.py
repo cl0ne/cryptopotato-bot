@@ -9,14 +9,22 @@ import subprocess
 
 from telegram import Update, Message
 from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, run_async
-from dice_parser import Dice
-
+from dice_parser import Dice, ParseError, ValueRangeError
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
+
+
+__NOTATION_DESCRIPTION = (
+    'simplified [dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdX`\n'
+    '`A` stands for number of rolls (can be omitted if 1) and `X` for number of sides. '
+    'Both `A` and `X` are positive integer numbers, '
+    f'maximum number of rolls is *{Dice.ROLL_LIMIT}*, the biggest dice has '
+    f'*{Dice.BIGGEST_DICE}* sides'
+)
 
 
 def show_help(update: Update, context: CallbackContext):
@@ -28,10 +36,7 @@ def show_help(update: Update, context: CallbackContext):
         '\n'
         '`/ping` - check if bot is currently active\n'
         '\n'
-        '`/roll` - make a dice roll in simplified '
-        '[dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdX`\n'
-        'Here `A` stands for number of rolls (can be omitted if 1) and `X` for number of sides; '
-        'both `A` and `X` are positive integer numbers\n'
+        f'`/roll` - make a dice roll in {__NOTATION_DESCRIPTION}\n'
         '\n'
         '`/fortune` - get a random epigram',
         disable_web_page_preview=True
@@ -76,15 +81,15 @@ def roll_command(update: Update, context: CallbackContext):
         roll_str = context.args[0]
         try:
             dice = Dice.parse(roll_str)
-        except ValueError:
+        except ParseError:
             update.message.reply_markdown(
                 "Oops, couldn't decide what kind of roll you want to make.\n\n"
-                "This command accepts simplified [dice notation]"
-                "(https://en.wikipedia.org/wiki/Dice_notation): `AdX`\n"
-                "where `A` stands for number of rolls (can be omitted if 1) and "
-                "`X` for number of sides; both `A` and `X` are positive integer numbers\n",
+                f"This command accepts only {__NOTATION_DESCRIPTION}",
                 disable_web_page_preview=True
             )
+            return
+        except ValueRangeError as e:
+            update.message.reply_markdown(e.formatted_message)
             return
         label = message.text_markdown.split(None, 2)[2:]
         label = label[0] if label else ''

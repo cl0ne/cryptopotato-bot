@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 
-from dice_parser import Dice
+from dice_parser import Dice, ParseError, ValueRangeError
 
 
 class DiceParserTest(unittest.TestCase):
@@ -17,11 +17,47 @@ class DiceParserTest(unittest.TestCase):
 
         for roll_str in (
             'd', '1d',
-            '-1d', '-1d6', 'd+6', '1d-6', '-6d-1',
-            '0d6', '1d0', 'd0', '0d0'
+            '-1d', '-1d6', 'd+6', '1d-6', '-6d-1'
         ):
             with self.subTest(roll_str=roll_str):
-                self.assertRaises(ValueError, Dice.parse, roll_str)
+                self.assertRaises(ParseError, Dice.parse, roll_str)
+
+        for roll_str in ('0d6', '1d0', 'd0', '0d0'):
+            with self.subTest(roll_str=roll_str):
+                self.assertRaises(ValueRangeError, Dice.parse, roll_str)
+
+    def test_init(self):
+        for rolls, sides in (
+            (1, 1),
+            (1, 6),
+            (1, 10),
+            (100, 6),
+            (100, 1),
+            (1, 120),
+            (100, 120)
+        ):
+            with self.subTest(rolls=rolls, sides=sides):
+                d = Dice(rolls, sides)
+                self.assertEqual(d.rolls, rolls)
+                self.assertEqual(d.sides, sides)
+
+        for rolls, sides in (
+            (0, 0),
+            (0, 6),
+            (1, 0),
+            
+            (-1, 6),
+            (-1, -6),
+            (1, -6),
+
+            (1, 121),
+            (100, 121),
+            (120, 120),
+            (120, 6),
+            (120, 100)
+        ):
+            with self.subTest(rolls=rolls, sides=sides):
+                self.assertRaises(ValueRangeError, Dice, rolls, sides)
 
     @mock.patch('random.randint', return_value=1)
     def test_get_result(self, randint):
