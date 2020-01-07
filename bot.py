@@ -19,9 +19,12 @@ logger = logging.getLogger(__name__)
 
 
 __NOTATION_DESCRIPTION = (
-    'simplified [dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdX`\n'
-    '`A` stands for number of rolls (can be omitted if 1) and `X` for number of sides. '
-    'Both `A` and `X` are positive integer numbers, '
+    'simplified [dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdB+M`\n'
+    '- `A` is a number of rolls (can be omitted if 1)\n'
+    '- `B` specifies number of sides\n'
+    '- `M` is a  modifier that is added to the roll result, "+" or "-" between `B` and `M` '
+    "defines modifier's sign\n"
+    'Both `A` and `B` are positive integer numbers, `M` is an integer number, '
     f'maximum number of rolls is *{Dice.ROLL_LIMIT}*, the biggest dice has '
     f'*{Dice.BIGGEST_DICE}* sides'
 )
@@ -32,13 +35,13 @@ def show_help(update: Update, context: CallbackContext):
     update.message.reply_markdown(
         '*Available commands:*\n\n'
 
-        '`/me` - announce your actions to the chat\n'
+        '*/me* - announce your actions to the chat\n'
         '\n'
-        '`/ping` - check if bot is currently active\n'
+        '*/ping* - check if bot is currently active\n'
         '\n'
-        f'`/roll` - make a dice roll in {__NOTATION_DESCRIPTION}\n'
+        f'*/roll* - make a dice roll in {__NOTATION_DESCRIPTION}\n'
         '\n'
-        '`/fortune` - get a random epigram',
+        '*/fortune* - get a random epigram',
         disable_web_page_preview=True
     )
 

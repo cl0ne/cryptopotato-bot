@@ -41,33 +41,38 @@ class Dice:
         r'(?P<rolls>\d+)?'
         r'd'
         r'(?P<sides>\d+)'
+        r'(?:(?P<modifier_sign>[+-])(?P<modifier>\d+))?'
     )
     BIGGEST_DICE = 120
     ROLL_LIMIT = 100
 
-    def __init__(self, rolls, sides):
+    def __init__(self, rolls, sides, modifier=0):
         if not(0 < rolls <= self.ROLL_LIMIT):
             raise ValueRangeError('roll count', rolls, (1, self.ROLL_LIMIT))
         if not(0 < sides <= self.BIGGEST_DICE):
             raise ValueRangeError('sides', sides, (1, self.BIGGEST_DICE))
         self.rolls = rolls
         self.sides = sides
+        self.modifier = modifier or 0
 
     @staticmethod
     def parse(roll_str):
         match = Dice.__regex.fullmatch(roll_str)
         if not match:
             raise ParseError
-        rolls, sides = match.groups()
+        rolls, sides, modifier_sign, modifier = match.groups()
         rolls = int(rolls) if rolls else 1
         sides = int(sides)
-        return Dice(rolls, sides)
+        modifier = int(modifier) if modifier else 0
+        if modifier and modifier_sign == '-':
+            modifier = -modifier
+        return Dice(rolls, sides, modifier)
 
     def _single_roll(self):
         return random.randint(1, self.sides)
 
     def get_result(self, item_limit=None) -> Tuple[int, List[int], bool]:
-        total = 0
+        total = self.modifier
         items = []
         if item_limit is None:
             item_count = self.rolls
