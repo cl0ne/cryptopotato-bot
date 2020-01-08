@@ -15,7 +15,7 @@ Bot requires authorization token to be set in `BOT_TOKEN` environment variable. 
     - Prints a random epigram, requires `fortune` executable to be present.
 * `/ping`
     - Confirms that bot is currently active by responding with 'pong'.
-* `/roll`
+* `/roll` (or `/r` for short)
     - 🚧 make a dice roll in simplified [dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdB+M`
         - `A`: number of rolls (can be omitted if 1)
         - `B`: number of sides

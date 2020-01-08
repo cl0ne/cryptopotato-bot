@@ -39,7 +39,7 @@ def show_help(update: Update, context: CallbackContext):
         '\n'
         '*/ping* - check if bot is currently active\n'
         '\n'
-        f'*/roll* - make a dice roll in {__NOTATION_DESCRIPTION}\n'
+        f'*/roll* or */r* - make a dice roll in {__NOTATION_DESCRIPTION}\n'
         '\n'
         '*/fortune* - get a random epigram',
         disable_web_page_preview=True
@@ -133,7 +133,7 @@ def main():
     fortune = CommandHandler("fortune", fortune_command, filters=~Filters.update.edited_message)
     dispatcher.add_handler(fortune)
 
-    roll = CommandHandler("roll", roll_command, filters=~Filters.update.edited_message)
+    roll = CommandHandler(['roll', 'r'], roll_command, filters=~Filters.update.edited_message)
     dispatcher.add_handler(roll)
 
     dispatcher.add_error_handler(error_handler)
