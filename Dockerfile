@@ -27,6 +27,7 @@ WORKDIR /opt/bot
 
 COPY --from=builder /opt/bot/entrypoint.sh .
 COPY --from=builder /opt/bot/bot.py .
+COPY --from=builder /opt/bot/dice_parser.py .
 COPY --from=builder /opt/bot/venv venv
 COPY --from=builder /opt/bot/LICENSE .
 
