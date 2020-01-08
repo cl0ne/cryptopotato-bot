@@ -6,8 +6,10 @@
 import logging
 import os
 import subprocess
+import sys
+import traceback
 
-from telegram import Update, Message
+from telegram import Update, Message, ParseMode
 from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, run_async
 from dice_parser import Dice, ParseError, ValueRangeError
 
@@ -72,11 +74,6 @@ def fortune_command(update: Update, context: CallbackContext):
         logger.warning('Failed to call fortune executable: %s', error)
 
 
-def error_handler(update: Update, context: CallbackContext):
-    """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
-
-
 def roll_command(update: Update, context: CallbackContext):
     """Perform dice roll specified in dice notation."""
     message: Message = update.message
@@ -116,13 +113,65 @@ def roll_command(update: Update, context: CallbackContext):
     message.reply_markdown(text, quote=False, disable_web_page_preview=True)
 
 
+__developer_ids = []
+
+
+def produce_error_command(update: Update, context: CallbackContext):
+    """Generate error to be handled in error_handler"""
+    user_id = update.effective_user.id
+    if user_id in __developer_ids:
+        assert not 'a banana'
+    # ignore everyone else
+
+
+def error_handler(update: Update, context: CallbackContext):
+    """Log Errors caused by Updates."""
+    trace = ''.join(traceback.format_tb(sys.exc_info()[2]))
+    payload = ''
+    user = update.effective_user
+    if user:
+        payload += f' with user {user.mention_html()}'
+    if update.effective_chat:
+        payload += f' in chat <i>{update.effective_chat.title}</i>'
+        if update.effective_chat.username:
+            payload += f' (@{update.effective_chat.username})'
+    if update.poll:
+        payload += f' with poll id {update.poll.id}.'
+    text = (
+        f"Error <code>{context.error}</code> happened{payload}. "
+        f"Full traceback:\n\n"
+        f"<code>{trace}</code>"
+    )
+    for dev_id in __developer_ids:
+        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML)
+    
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+
 def main():
     """Start the bot."""
     updater = Updater(token=os.getenv('BOT_TOKEN'), use_context=True)
+    developer_ids_str = os.getenv('DEVELOPER_IDS')
+    if developer_ids_str:
+        try:
+            global __developer_ids
+            __developer_ids = set(map(int, developer_ids_str.split(',')))
+        except ValueError:
+            logger.error(
+                'DEVELOPER_IDS value must be a comma-separated integers list, not "%s"!',
+                developer_ids_str
+            )
 
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("help", show_help))
+
+    produce_error = CommandHandler(
+        "produce_error",
+        produce_error_command,
+        filters=~Filters.update.edited_message
+    )
+    dispatcher.add_handler(produce_error)
 
     me = CommandHandler("me", me_command, filters=~Filters.update.edited_message)
     dispatcher.add_handler(me)
