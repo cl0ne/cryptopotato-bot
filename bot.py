@@ -9,8 +9,10 @@ import subprocess
 import sys
 import traceback
 
+import telegram
 from telegram import Update, Message, ParseMode
 from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, run_async
+
 from dice_parser import Dice, ParseError, ValueRangeError
 
 # Enable logging
@@ -113,7 +115,7 @@ def roll_command(update: Update, context: CallbackContext):
     message.reply_markdown(text, quote=False, disable_web_page_preview=True)
 
 
-__developer_ids = []
+__developer_ids = set()
 
 
 def produce_error_command(update: Update, context: CallbackContext):
@@ -126,27 +128,46 @@ def produce_error_command(update: Update, context: CallbackContext):
 
 def error_handler(update: Update, context: CallbackContext):
     """Log Errors caused by Updates."""
-    trace = ''.join(traceback.format_tb(sys.exc_info()[2]))
-    payload = ''
+    message_parts = [f'<code>{context.error!r}</code> was triggered']
+    
     user = update.effective_user
     if user:
-        payload += f' with user {user.mention_html()}'
-    if update.effective_chat:
-        payload += f' in chat <i>{update.effective_chat.title}</i>'
-        if update.effective_chat.username:
-            payload += f' (@{update.effective_chat.username})'
-    if update.poll:
-        payload += f' with poll id {update.poll.id}.'
-    text = (
-        f"Error <code>{context.error}</code> happened{payload}. "
-        f"Full traceback:\n\n"
-        f"<code>{trace}</code>"
-    )
-    for dev_id in __developer_ids:
-        context.bot.send_message(dev_id, text, parse_mode=ParseMode.HTML)
+        message_parts.append(f' by user {user.mention_html()}')
     
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
+    chat = update.effective_chat
+    if chat:
+        if chat.type == 'private':
+            message_parts.append(' in private chat')
+        else:
+            message_parts.append(f' in {chat.type} <i>{update.effective_chat.title}</i>')
+            if update.effective_chat.username:
+                message_parts.append(f' (@{update.effective_chat.username})')
+    
+    if update.poll:
+        message_parts.append(f' with poll id {update.poll.id}')
 
+    trace = ''.join(traceback.format_tb(sys.exc_info()[2]))
+    message_parts.append(f'. Full traceback:\n\n<code>{trace}</code>')
+    message_text = ''.join(message_parts)
+    delivery_failed = set()
+    for dev_id in __developer_ids:
+        try:
+            context.bot.send_message(dev_id, message_text, parse_mode=ParseMode.HTML)
+        except (telegram.error.Unauthorized, telegram.error.BadRequest):
+            # User blocked the bot or didn't initiate conversation with it
+            delivery_failed.add(dev_id)
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
+    
+    if delivery_failed:
+        failed_ids_str = ' '.join(str(i) for i in delivery_failed)
+        text = f'DM error reports delivery failed for users: {failed_ids_str}'
+        for dev_id in (__developer_ids - delivery_failed):
+            try:
+                context.bot.send_message(dev_id, text)
+            except telegram.error.Unauthorized:
+                pass  # just ignore it
+        logger.warning(text)
+    
 
 def main():
     """Start the bot."""

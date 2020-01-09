@@ -9,7 +9,10 @@ Bot requires authorization token to be set in `BOT_TOKEN` environment variable. 
 
 If you want bot send error reports directly to your private messages, set `DEVELOPER_IDS` environment variable to a comma-separated list of corresponding user ids. You can get yours, for example, from [userinfobot](https://t.me/userinfobot) (it supports retrieving ids from forwarded messages too, but it works I suppose only when message's author has enabled linking back to their account in forwarded messages privacy settings). [This question on SO](https://stackoverflow.com/questions/32683992/find-out-my-own-user-id-for-sending-a-message-with-telegram-api) has more options.
 
+N.B. To receive error reports from bot you have to initiate a conversation with the bot first. For example, by issuing `/start` command to it in direct messages or unblocking the bot if you blocked it before.
+
 ## Current Features
+Available commands:
 * `/me message`
     - Announces sender's actions to the chat, original message will be deleted if bot has enough permissions in the chat.
     - Example: `/me hit the wall`.
