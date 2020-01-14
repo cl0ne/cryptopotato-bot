@@ -5,7 +5,7 @@ COPY . /opt/bot
 WORKDIR /opt/bot
 
 RUN apk upgrade --no-cache \
- && apk add --no-cache alpine-sdk \
+ && apk add --no-cache build-base \
                        openssl openssl-dev \
                        libffi libffi-dev \
  && python -m venv venv \
