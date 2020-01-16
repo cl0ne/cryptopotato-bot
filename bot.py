@@ -164,7 +164,7 @@ def error_handler(update: Update, context: CallbackContext):
         for dev_id in (__developer_ids - delivery_failed):
             try:
                 context.bot.send_message(dev_id, text)
-            except telegram.error.Unauthorized:
+            except (telegram.error.Unauthorized, telegram.error.BadRequest):
                 pass  # just ignore it
         logger.warning(text)
     
