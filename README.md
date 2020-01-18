@@ -35,3 +35,7 @@ Available commands:
 * `/roll` similar to [RollEm Telegram Bot](https://github.com/treetrnk/rollem-telegram-bot) 🚧
     - arbitrary chained rolls (`4+2d6+d10-d7`)
     - exploding rolls (`d6!` or `d10x`), where maximum rolled value triggers extra rolls
+
+## License
+
+Licensed under the [MIT license](LICENSE).
