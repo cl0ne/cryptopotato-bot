@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 
-from dice_parser import Dice, ParseError, ValueRangeError
+from devpotato_bot.dice_parser import Dice, ParseError, ValueRangeError
 
 
 class DiceParserTest(unittest.TestCase):

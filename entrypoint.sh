@@ -6,7 +6,7 @@ trap "/bin/kill -s TERM -1" SIGTERM SIGQUIT
 case "${1}" in
     '')
         source /opt/bot/venv/bin/activate
-        python /opt/bot/bot.py
+        python -m devpotato_bot
     ;;
     *) exec ${@} ;;
 esac

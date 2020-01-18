@@ -85,5 +85,5 @@ class Dice:
             total += r
             items.append(r)
         if item_limit is not None:
-            total += sum(self._single_roll() for i in range(item_limit, self.rolls))
+            total += sum(self._single_roll() for _ in range(item_limit, self.rolls))
         return total, items, item_count < self.rolls

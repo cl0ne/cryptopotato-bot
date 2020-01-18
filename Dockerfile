@@ -10,7 +10,7 @@ RUN apk upgrade --no-cache \
                        libffi libffi-dev \
  && python -m venv venv \
  && . ./venv/bin/activate \
- && pip install -r requirements.txt
+ && pip install -e .
 
 # ===
 
@@ -26,8 +26,7 @@ RUN apk upgrade --no-cache \
 WORKDIR /opt/bot
 
 COPY --from=builder /opt/bot/entrypoint.sh .
-COPY --from=builder /opt/bot/bot.py .
-COPY --from=builder /opt/bot/dice_parser.py .
+COPY --from=builder /opt/bot/devpotato_bot devpotato_bot
 COPY --from=builder /opt/bot/venv venv
 COPY --from=builder /opt/bot/LICENSE .
 
