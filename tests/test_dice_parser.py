@@ -41,6 +41,24 @@ class DiceParserTest(unittest.TestCase):
             with self.subTest(roll_str=roll_str):
                 self.assertRaises(ParseError, Dice.parse, roll_str)
 
+    def test_percentile_dice(self):
+        for roll_str, expected in (
+            ('d%',      (1, 100, 0)),
+            ('d%-5',    (1, 100, -5)),
+            ('d%+5',    (1, 100, 5)),
+            ('d%+0',    (1, 100, 0)),
+            ('2d%-1',   (2, 100, -1)),
+            ('2d%+1',   (2, 100, 1))
+        ):
+            with self.subTest(roll_str=roll_str):
+                self.assertEqual(self._DiceVars(Dice.parse(roll_str)), expected)
+
+        for roll_str in ('%d', '1%d', '-%1d', '-1%d6', '-1d%', 'd%%', '2d%%'):
+            with self.subTest(roll_str=roll_str):
+                self.assertRaises(ParseError, Dice.parse, roll_str)
+
+        self.assertRaises(ValueRangeError, Dice.parse, '0d%')
+
     def test_init(self):
         for rolls, sides, modifier in (
             (1, 1, 0),

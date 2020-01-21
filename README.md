@@ -40,7 +40,7 @@ Available commands:
 
     Make a dice roll in simplified [dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdB+M`:
     - `A`: number of rolls (can be omitted if 1)
-    - `B`: number of sides
+    - `B`: number of sides or `%` for percentile dice (i.e. `d100`)
     - `M`: a modifier that is added to (or subtracted from) roll result ("+" or "-" between `B` and `M` defines modifier's sign)
     - `A`, `B` and `M` are integer numbers, `A` and `B` are positive.
 

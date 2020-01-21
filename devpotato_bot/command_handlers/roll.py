@@ -6,7 +6,7 @@ from ..dice_parser import Dice, ParseError, ValueRangeError
 NOTATION_DESCRIPTION = (
     'simplified [dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdB+M`\n'
     '- `A` is a number of rolls (can be omitted if 1)\n'
-    '- `B` specifies number of sides\n'
+    '- `B` specifies number of sides, you can put `%` for percentile dice (i.e. `d100`)\n'
     '- `M` is a  modifier that is added to the roll result, "+" or "-" between `B` and `M` '
     "defines modifier's sign\n"
     'Both `A` and `B` are positive integer numbers, `M` is an integer number, '

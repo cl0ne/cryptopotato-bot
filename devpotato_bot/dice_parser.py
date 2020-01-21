@@ -40,7 +40,7 @@ class Dice:
     __regex = re.compile(
         r'(?P<rolls>\d+)?'
         r'd'
-        r'(?P<sides>\d+)'
+        r'(?P<sides>\d+|%)'
         r'(?:(?P<modifier_sign>[+-])(?P<modifier>\d+))?'
     )
     BIGGEST_DICE = 120
@@ -62,7 +62,7 @@ class Dice:
             raise ParseError
         rolls, sides, modifier_sign, modifier = match.groups()
         rolls = int(rolls) if rolls else 1
-        sides = int(sides)
+        sides = int(sides) if sides != '%' else 100
         modifier = int(modifier) if modifier else 0
         if modifier and modifier_sign == '-':
             modifier = -modifier
