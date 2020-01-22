@@ -69,7 +69,10 @@ def command_callback(update: Update, context: CallbackContext):
     roll_total, single_rolls, was_limited = dice.get_result(item_limit=10)
     lines.extend((
         '\\(',
-        ' \\+ '.join(str(r) for r in single_rolls)
+        ' \\+ '.join(
+            f'~{r.value}~' if r.is_discarded else f'*__{r.value}__*'
+            for r in single_rolls
+        )
     ))
     if was_limited:
         lines.append(' \\+ ⋯ ')
