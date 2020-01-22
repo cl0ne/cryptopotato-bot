@@ -113,7 +113,8 @@ class DiceParserTest(unittest.TestCase):
     @mock.patch('random.randint', return_value=1)
     def test_get_result(self, randint):
         for roll_count, sides, modifier in (
-            (1, 2, 0), (3, 6, 0), (3, 6, -1), (3, 6, +1), (5, 10, -10), (5, 10, +10)
+            (1, 2, 0), (3, 6, 0), (3, 6, -1), (3, 6, +1), (5, 10, -10), (5, 10, +10),
+            (1, 100, 0), (5, 100, -5), (10, 100, 0), (2, 100, 10)
         ):
             with self.subTest(rolls=roll_count, sides=sides, modifier=modifier):
                 d = Dice(roll_count, sides, modifier)
