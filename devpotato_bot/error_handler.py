@@ -12,26 +12,31 @@ _logger = logging.getLogger(__name__)
 def create_callback(developer_ids):
     def callback(update: Update, context: CallbackContext):
         """Log Errors caused by Updates."""
-        message_parts = [f'<code>{context.error!r}</code> was triggered']
+        error_str = str(context.error)
+        if not error_str:
+            error_str = repr(context.error)
+        message_parts = [f'An error <code>{error_str}</code> was triggered']
 
-        user = update.effective_user
-        if user:
-            message_parts.append(f' by user {user.mention_html()}')
+        if update:
+            user = update.effective_user
+            if user:
+                message_parts.append(f' by user {user.mention_html()}')
 
-        chat = update.effective_chat
-        if chat:
-            if chat.type == 'private':
-                message_parts.append(' in private chat')
-            else:
-                message_parts.append(f' in {chat.type} <i>{update.effective_chat.title}</i>')
-                if update.effective_chat.username:
-                    message_parts.append(f' (@{update.effective_chat.username})')
+            chat = update.effective_chat
+            if chat:
+                if chat.type == 'private':
+                    message_parts.append(' in private chat')
+                else:
+                    message_parts.append(f' in {chat.type} <i>{chat.title}</i>')
+                    if update.effective_chat.username:
+                        message_parts.append(f' (@{chat.username})')
 
-        if update.poll:
-            message_parts.append(f' with poll id {update.poll.id}')
+            if update.poll:
+                message_parts.append(f' with poll id {update.poll.id}')
 
         trace = ''.join(traceback.format_tb(sys.exc_info()[2]))
-        message_parts.append(f'. Full traceback:\n\n<code>{trace}</code>')
+        if trace:
+            message_parts.append(f'. Full traceback:\n\n<code>{trace}</code>')
         message_text = ''.join(message_parts)
         delivery_failed = set()
         for dev_id in developer_ids:
