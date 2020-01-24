@@ -13,7 +13,7 @@ class Runner:
 
         dispatcher = self.updater.dispatcher
 
-        from .command_handlers import handler_getters
+        from .commands import handler_getters
         for handler_getter in handler_getters:
             dispatcher.add_handler(handler_getter(developer_ids=self.developer_ids))
 

@@ -1,10 +1,10 @@
 from setuptools import setup
 
 setup(
-    name = 'devpotato-bot',
-    version = '0.3.4',
+    name='devpotato-bot',
+    version='0.3.4',
     description='Telegram bot for cryptopotato chat',
-    packages = ['devpotato_bot'],
+    packages=['devpotato_bot'],
     python_requires='>=3.6',
     install_requires=['python-telegram-bot>=12.3.0'],
     author='Vladislav Glinsky',
