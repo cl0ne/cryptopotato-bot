@@ -8,6 +8,6 @@ case "${1}" in
         source /opt/bot/venv/bin/activate
         python -m devpotato_bot
     ;;
-    *) exec ${@} ;;
+    *) exec "${@}" ;;
 esac
 
