@@ -10,6 +10,7 @@ RUN apk upgrade --no-cache \
                        libffi libffi-dev \
  && python -m venv venv \
  && . ./venv/bin/activate \
+ && pip install -r requirements.txt \
  && pip install -e .
 
 # ===

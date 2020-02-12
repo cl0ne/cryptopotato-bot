@@ -38,4 +38,3 @@ build/
 ### Git repo
 .git*
 *.md
-requirements.txt
