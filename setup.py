@@ -6,7 +6,7 @@ setup(
     description='Telegram bot for cryptopotato chat',
     packages=['devpotato_bot'],
     python_requires='>=3.6',
-    install_requires=['python-telegram-bot>=12.3.0'],
+    install_requires=['python-telegram-bot>=12.3'],
     author='Vladislav Glinsky',
     author_email='cl0ne@mithril.org.ua',
     url="https://code.nix.org.ua/cl0ne/cryptopotato-bot",
