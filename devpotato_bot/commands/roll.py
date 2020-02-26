@@ -38,7 +38,7 @@ def _roll_callback(update: Update, context: CallbackContext):
         roll_str = '1d6'
         dice = Dice(1, 6)
         label = ''
-    lines = ['{} rolls *{}*'.format(update.effective_user.mention_markdown(), roll_str)]
+    lines = ['🎲 {} rolls *{}*'.format(update.effective_user.mention_markdown(), roll_str)]
     if label:
         lines.extend((' for:\n', label, '\n'))
     lines.append('\n')
