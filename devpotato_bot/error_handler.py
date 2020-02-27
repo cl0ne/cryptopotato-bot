@@ -45,7 +45,7 @@ def create_callback(developer_ids):
             except (telegram.error.Unauthorized, telegram.error.BadRequest):
                 # User blocked the bot or didn't initiate conversation with it
                 delivery_failed.add(dev_id)
-        _logger.warning('Update "%s" caused error "%s"', update, context.error)
+        _logger.warning('Update "%s" triggered an error', update, exc_info=context.error)
 
         if delivery_failed:
             failed_ids_str = ' '.join(str(i) for i in delivery_failed)

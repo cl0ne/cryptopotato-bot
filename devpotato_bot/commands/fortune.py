@@ -25,7 +25,7 @@ def _fortune_callback(update: Update, context: CallbackContext):
             f'{result.stdout}'
         )
     except (OSError, TimeoutError) as error:
-        _logger.warning('Failed to call fortune executable: %s', error)
+        _logger.warning('Failed to call fortune executable', exc_info=error)
         reply_text = fr'Not enough entropy to tell <b>Fortune</b> for {user_name} 🤷‍¯\_(ツ)_/¯️'
     bot.send_message(chat.id, reply_text, parse_mode=ParseMode.HTML)
 
