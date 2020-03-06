@@ -3,7 +3,7 @@ import sys
 import traceback
 
 import telegram
-from telegram import Update, ParseMode
+from telegram import Update, ParseMode, Chat, User
 from telegram.ext import CallbackContext
 
 _logger = logging.getLogger(__name__)
@@ -18,11 +18,11 @@ def create_callback(developer_ids):
         message_parts = [f'An error <code>{error_str}</code> was triggered']
 
         if update:
-            user = update.effective_user
+            user: User = update.effective_user
             if user:
                 message_parts.append(f' by user {user.mention_html()}')
 
-            chat = update.effective_chat
+            chat: Chat = update.effective_chat
             if chat:
                 if chat.type == 'private':
                     message_parts.append(' in private chat')
@@ -30,6 +30,7 @@ def create_callback(developer_ids):
                     message_parts.append(f' in {chat.type} <i>{chat.title}</i>')
                     if update.effective_chat.username:
                         message_parts.append(f' (@{chat.username})')
+                message_parts.append(f' (id: {chat.id})')
 
             if update.poll:
                 message_parts.append(f' with poll id {update.poll.id}')
