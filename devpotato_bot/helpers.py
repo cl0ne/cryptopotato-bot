@@ -33,7 +33,9 @@ def deletes_caller_message(func):
         message: Message = update.effective_message
         try:
             bot.delete_message(message.chat_id, message.message_id)
-        except telegram.error.BadRequest as e:
-            _logger.warning('Message with id %d was not deleted', exc_info=e)
+        except telegram.error.BadRequest:
+            # deletion failed most likely due to lack of permissions in the chat
+            # we can safely ignore it most of the time
+            pass
         return func(update, context)
     return wrapper
