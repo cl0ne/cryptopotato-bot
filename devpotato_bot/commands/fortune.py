@@ -1,7 +1,7 @@
 import logging
 import subprocess
 
-from telegram import Update, Message, ChatAction, Bot, ParseMode, Chat
+from telegram import Update, ChatAction, Bot, ParseMode, Chat
 from telegram.ext import CallbackContext, run_async
 
 from ..helpers import deletes_caller_message
@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 @run_async
 @deletes_caller_message
-def _fortune_callback(update: Update, context: CallbackContext):
+def command_callback(update: Update, context: CallbackContext):
     """Get random epigram from `fortune`."""
     bot: Bot = context.bot
     chat: Chat = update.effective_chat
@@ -28,8 +28,3 @@ def _fortune_callback(update: Update, context: CallbackContext):
         _logger.warning('Failed to call fortune executable', exc_info=error)
         reply_text = fr'Not enough entropy to tell <b>Fortune</b> for {user_name} 🤷‍¯\_(ツ)_/¯️'
     bot.send_message(chat.id, reply_text, parse_mode=ParseMode.HTML)
-
-
-def get_handler(**kwargs):
-    from telegram.ext import Filters, CommandHandler
-    return CommandHandler("fortune", _fortune_callback, filters=~Filters.update.edited_message)

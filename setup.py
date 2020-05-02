@@ -2,11 +2,19 @@ from setuptools import setup
 
 setup(
     name='devpotato-bot',
-    version='0.3.5',
+    version='0.4.2',
     description='Telegram bot for cryptopotato chat',
     packages=['devpotato_bot'],
+
     python_requires='>=3.6',
-    install_requires=['python-telegram-bot>=12.5'],
+    install_requires=[
+        'python-telegram-bot>=12.5',
+        'cachetools>=4',
+        'python-dateutil>=2.8',
+        'SQLAlchemy>=1.3',
+        'alembic>=1.4'
+    ],
+
     author='Vladislav Glinsky',
     author_email='cl0ne@mithril.org.ua',
     url="https://code.nix.org.ua/cl0ne/cryptopotato-bot",

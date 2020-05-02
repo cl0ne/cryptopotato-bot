@@ -5,8 +5,17 @@ trap "/bin/kill -s TERM -1" SIGTERM SIGQUIT
 
 case "${1}" in
     '')
+        sleep "${WAIT_BEFORE_START:-0}" # Wait for init-container to finish
         source /opt/bot/venv/bin/activate
         python -m devpotato_bot
+    ;;
+    'setup_db')
+        source /opt/bot/venv/bin/activate
+        python /opt/bot/setup_db.py
+    ;;
+    'migrate_db')
+        source /opt/bot/venv/bin/activate
+        alembic -c /opt/bot/alembic.ini upgrade head
     ;;
     *) exec "${@}" ;;
 esac

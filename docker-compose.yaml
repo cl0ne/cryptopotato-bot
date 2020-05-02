@@ -1,0 +1,52 @@
+version: "2.4"
+
+x-first-run:
+  # For the first run switch migrate_db with setup_db
+  setup_db:
+    image: "sevoid/cryptopotato-bot:latest"
+    restart: "no"
+    command: [ "setup_db" ]
+    environment:
+      - DB_URL=sqlite:////data/db.sqlite
+    volumes:
+      - data:/data
+    networks:
+      - cryptopotato
+
+services:
+
+  migrate_db:
+    image: "sevoid/cryptopotato-bot:latest"
+    restart: "no"
+    command: [ "migrate_db" ]
+    environment:
+      - DB_URL=sqlite:////data/db.sqlite
+    volumes:
+      - data:/data
+    networks:
+      - cryptopotato
+
+  telegram_bot:
+    image: "sevoid/cryptopotato-bot:latest"
+    restart: always
+    environment:
+      - DB_URL=sqlite:////data/db.sqlite
+      - BOT_TOKEN=
+      - DEVELOPER_IDS=
+      - WAIT_BEFORE_START=5
+    volumes:
+      - data:/data
+    networks:
+      - cryptopotato
+    depends_on:
+      - migrate_db
+
+volumes:
+  data:
+    name: data
+    driver: local
+
+networks:
+  cryptopotato:
+    name: cryptopotato
+

@@ -6,10 +6,10 @@ import telegram
 from telegram import Update, ParseMode, Chat, User
 from telegram.ext import CallbackContext
 
-_logger = logging.getLogger(__name__)
-
 
 def create_callback(developer_ids):
+    logger = logging.getLogger(__name__)
+
     def callback(update: Update, context: CallbackContext):
         """Log Errors caused by Updates."""
         error_str = str(context.error)
@@ -46,7 +46,7 @@ def create_callback(developer_ids):
             except (telegram.error.Unauthorized, telegram.error.BadRequest):
                 # User blocked the bot or didn't initiate conversation with it
                 delivery_failed.add(dev_id)
-        _logger.warning('Update "%s" triggered an error', update, exc_info=context.error)
+        logger.warning('Update "%s" triggered an error', update, exc_info=context.error)
 
         if delivery_failed:
             failed_ids_str = ' '.join(str(i) for i in delivery_failed)
@@ -56,5 +56,5 @@ def create_callback(developer_ids):
                     context.bot.send_message(dev_id, text)
                 except (telegram.error.Unauthorized, telegram.error.BadRequest):
                     pass  # just ignore it
-            _logger.warning(text)
+            logger.warning(text)
     return callback

@@ -1,27 +1,27 @@
-from telegram import Update, Chat
+from telegram import Update, Chat, error, Message
 from telegram.ext import CallbackContext
 
-from devpotato_bot.helpers import deletes_caller_message, developer_only
+from devpotato_bot.helpers import try_delete_message
 
 
-def _build_callback(developer_ids):
-    @deletes_caller_message
-    @developer_only(developer_ids)
-    def _callback(update: Update, context: CallbackContext):
-        """Send chat id to developer's private messages"""
-        chat: Chat = update.effective_chat
-        if chat.type == Chat.PRIVATE:
-            return
+def command_callback(update: Update, context: CallbackContext):
+    """Show current chat id, use command argument 'hide' to receive it as a private message"""
+    chat: Chat = update.effective_chat
+    hide = False
+
+    if chat.type == Chat.PRIVATE:
+        message_text = f'id for this chat is equal to your id: {chat.id}'
+    else:
         message_text = f'id for {chat.type} "{chat.title}" is {chat.id}'
-        user_id = update.effective_user.id
+        hide = context.args and context.args[0].lower() == 'hide'
+    user_id = update.effective_user.id
+    message: Message = update.effective_message
+    if not hide:
+        message.reply_text(message_text)
+        return
+    try_delete_message(message)
+    try:
         context.bot.send_message(user_id, message_text)
-    return _callback
+    except (error.Unauthorized, error.BadRequest):
+        pass
 
-
-def get_handler(*, developer_ids, **kwargs):
-    from telegram.ext import Filters, CommandHandler
-    return CommandHandler(
-        "get_chat_id",
-        _build_callback(developer_ids),
-        filters=~Filters.update.edited_message
-    )

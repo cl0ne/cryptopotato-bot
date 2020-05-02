@@ -15,7 +15,7 @@ NOTATION_DESCRIPTION = (
 )
 
 
-def _roll_callback(update: Update, context: CallbackContext):
+def command_callback(update: Update, context: CallbackContext):
     """Perform dice roll specified in dice notation."""
     message: Message = update.message
     if context.args:
@@ -53,8 +53,3 @@ def _roll_callback(update: Update, context: CallbackContext):
     lines.extend(('\\) \\= ', str(roll_total)))
     text = ''.join(lines)
     message.reply_markdown_v2(text, quote=False, disable_web_page_preview=True)
-
-
-def get_handler(**kwargs):
-    from telegram.ext import Filters, CommandHandler
-    return CommandHandler(['roll', 'r'], _roll_callback, filters=~Filters.update.edited_message)
