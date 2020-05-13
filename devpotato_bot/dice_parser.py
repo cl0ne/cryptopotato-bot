@@ -9,8 +9,7 @@ class ParseError(Exception):
 
 
 class ValueRangeError(ValueError):
-    def __init__(self, arg_name, value,
-                 allowed_range: Optional[Tuple[Optional[int], Optional[int]]] = None):
+    def __init__(self, arg_name, value, allowed_range: Tuple[Optional[int], Optional[int]]):
         self.arg_name = arg_name
         self.value = value
         self.allowed_range = allowed_range
@@ -19,21 +18,6 @@ class ValueRangeError(ValueError):
             'value': value,
             'allowed_range': allowed_range
         })
-    
-    @property
-    def message(self):
-        if self.allowed_range is None or self.allowed_range == (None, None):
-            return '{arg_name} has unacceptable value: {value}'
-        arg_min, arg_max = self.allowed_range
-        if arg_max is None:
-            return '{arg_name} is less than {allowed_range[0]}: {value}'
-        if arg_min is None:
-            return '{arg_name} is greater than {allowed_range[1]}: {value}'
-        return '{arg_name} is not between {allowed_range[0]} and {allowed_range[1]}: {value}'
-    
-    @property
-    def formatted_message(self):
-        return self.message.format(**self.args[0])
 
 
 class Dice:
