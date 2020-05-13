@@ -75,7 +75,9 @@ def command_callback(update: Update, context: CallbackContext):
     if label:
         lines.extend((' for:\n', label, '\n'))
     lines.append('\n')
-    roll_total, single_rolls, was_limited = dice.get_result(item_limit=10)
+    roll_total, single_rolls, was_limited = dice.get_results(item_limit=15)
+    if dice.modifier:
+        lines.extend(escape_markdown(f'{dice.modifier} + ', version=2))
     lines.extend((
         '\\(',
         ' \\+ '.join(
