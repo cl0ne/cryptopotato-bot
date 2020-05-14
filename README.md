@@ -46,17 +46,24 @@ Example use: `/me hit the wall`.
 Get a random epigram for yourself with `/fortune`, requires `fortune` executable to be present.
 
 
-### Dice rolls <sup>WIP 🚧</sup>
+### Dice rolls 🎲
 
-`/roll` (or `/r` for short), similar to [RollEm Telegram Bot](https://github.com/treetrnk/rollem-telegram-bot).
+Dice can be rolled with `/roll` (or `/r` for short) command followed by formula (`1d6` used if omitted).
 
-Make a dice roll in simplified [dice notation](https://en.wikipedia.org/wiki/Dice_notation): `AdB+M`:
-- `A`: number of rolls (can be omitted if 1)
-- `B`: number of sides or `%` for percentile dice (i.e. `d100`)
-- `M`: a modifier that is added to (or subtracted from) roll result ("+" or "-" between `B` and `M` defines modifier's sign)
-- `A`, `B` and `M` are integer numbers, `A` and `B` are positive.
+The basic formula in the dice notation is `AdB`. `A` is a number of dice to be rolled (can be omitted if 1). `B` specifies the number of sides the die has, you can use `%` for percentile dice (i.e. `d100`). The maximum number of rolls is 100, the biggest allowed dice has 120 sides.
 
-Maximum number of rolls is 100, the biggest allowed dice has 120 sides.
+The basic formula can be extended with modifiers:
+ 
+Modifier to keep/discard the lowest/highest `k` results. Keep and discard is indicated by modifier's sign: `+` and `-`, omitted sign is equivalent to `+` (keep). It's followed by letter `L` or `H`  and a positive number to specify which results to be kept/discarded and how many. For example, `10d6-L6` discards 6 lowest results, `10d6+L4` and `10d6L4` keep 4 lowest, `10d6+H5` and `10d6H5` keep 5 highest, `10d6-H3` discards 3 highest.
+
+Additive modifier, a number with a sign that is added to (or subtracted from) total roll result. For example, `d6+5` adds 5 to a single roll result and `5d20L3-2` will subtract 2 from the sum of the 3 lowest results.
+
+More info about dice notation and its variations:
+
+- [Wikipedia](https://en.wikipedia.org/wiki/Dice_notation)
+- [rolz.org](https://rolz.org/)
+- [roll20 wiki](https://wiki.roll20.net/Dice_Reference)
+- [openroleplaying.org](https://web.archive.org/web/20061031103919/http://www.openroleplaying.org/tools/dieroller/index.cgi)
 
 ### Daily Titles Assignment
 
