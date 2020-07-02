@@ -2,14 +2,11 @@ def register_handlers(runner):
     from telegram.ext import Filters
     dispatcher = runner.updater.dispatcher
 
-    from . import fortune, help, me, ping, roll
+    from . import fortune, me, ping, roll
     from telegram.ext import CommandHandler
     dispatcher.add_handler(CommandHandler(
         "fortune", fortune.command_callback,
         filters=~Filters.update.edited_message
-    ))
-    dispatcher.add_handler(CommandHandler(
-        "help", help.command_callback
     ))
     dispatcher.add_handler(CommandHandler(
         "me", me.command_callback,
@@ -42,3 +39,6 @@ def register_handlers(runner):
 
     from . import daily_titles
     daily_titles.register_handlers(runner)
+
+    from .help_ import HelpPages
+    HelpPages().register_handlers(runner)
