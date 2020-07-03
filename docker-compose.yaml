@@ -1,11 +1,11 @@
 version: "2.4"
 
 x-first-run:
-  # For the first run switch migrate_db with setup_db
-  setup_db:
+  # For the first run switch migrate_db with init_db
+  init_db:
     image: "sevoid/cryptopotato-bot:latest"
     restart: "no"
-    command: [ "setup_db" ]
+    command: [ "init_db" ]
     environment:
       - DB_URL=sqlite:////data/db.sqlite
     volumes:

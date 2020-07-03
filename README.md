@@ -11,7 +11,7 @@ Simple [Telegram](https://telegram.org) bot for `cryptopotato` chat. To use this
 
 ## Setup
 ### Before first run
-Use `setup_db.py` script to create new database, it requires `DB_URL` to be set (see [Running bot](#running-bot) section for details).
+Use `init_db.py` script to create new database, it requires `DB_URL` to be set (see [Running bot](#running-bot) section for details).
 
 ### Database migrations
 To apply schema changes to existing database, [use Alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#running-our-first-migration). E.g., to get latest version of the schema use command `alembic upgrade head`. Details on specifying database URL can be found [here](alembic/README.md).

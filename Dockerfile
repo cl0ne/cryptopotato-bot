@@ -30,7 +30,7 @@ COPY --from=builder /opt/bot/entrypoint.sh .
 COPY --from=builder /opt/bot/devpotato_bot devpotato_bot
 COPY --from=builder /opt/bot/alembic.ini .
 COPY --from=builder /opt/bot/alembic alembic
-COPY --from=builder /opt/bot/setup_db.py .
+COPY --from=builder /opt/bot/init_db.py .
 COPY --from=builder /opt/bot/venv venv
 COPY --from=builder /opt/bot/LICENSE .
 

@@ -9,9 +9,9 @@ case "${1}" in
         source /opt/bot/venv/bin/activate
         python -m devpotato_bot
     ;;
-    'setup_db')
+    'init_db')
         source /opt/bot/venv/bin/activate
-        python /opt/bot/setup_db.py
+        python /opt/bot/init_db.py
     ;;
     'migrate_db')
         source /opt/bot/venv/bin/activate
