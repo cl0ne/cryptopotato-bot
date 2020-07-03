@@ -4,25 +4,6 @@ from telegram.utils.helpers import escape_markdown
 
 from ..dice_parser import Dice, ParseError, ValueRangeError
 
-NOTATION_DESCRIPTION = (
-    'The basic formula in the dice notation is `AdB`\\. `A` is a number of dice to be rolled \\(can be omitted if 1'
-    '\\)\\. `B` specifies the number of sides the die has, you can use `%` for percentile dice \\(i\\.e\\. '
-    f'`d100`\\)\\. The maximum number of rolls is *{Dice.ROLL_LIMIT}*, the biggest allowed dice has *'
-    f'{Dice.BIGGEST_DICE}* sides\\.\n '
-    '\n'
-    'The basic formula can be extended with modifiers:\n'
-    '\n'
-    'Modifier to keep/discard the lowest/highest `k` results\\. Keep and discard is indicated by modifier\'s sign: `+` '
-    'and `-`, omitted sign is equivalent to `+` \\(keep\\)\\. It\'s followed by letter `L` or `H`  and a positive '
-    'number to specify which results to be kept/discarded and how many\\. For example, `10d6-L6` discards 6 lowest '
-    'results, `10d6+L4` and `10d6L4` keep 4 lowest, `10d6+H5` and `10d6H5` keep 5 highest, `10d6-H3` discards 3 '
-    'highest\\.\n '
-    '\n'
-    'Additive modifier, a number with a sign that is added to \\(or subtracted from\\) total roll result\\. For '
-    'example, `d6+5` adds 5 to a single roll result and `5d20L3-2` will subtract 2 from the sum of the 3 lowest '
-    'results\\.'
-)
-
 
 def format_range_error(e: ValueRangeError):
     format_args = {'arg_name': e.arg_name, 'value': e.value}
@@ -54,9 +35,9 @@ def command_callback(update: Update, context: CallbackContext):
             dice = Dice.parse(roll_str)
         except ParseError:
             message.reply_markdown_v2(
-                f"Oops, couldn't decide what kind of roll you want to make\\.\n"
-                f"\n"
-                f"{NOTATION_DESCRIPTION}",
+                "Oops, couldn't decide what kind of roll you want to make\\.\n"
+                "\n"
+                "See /help for the detailed description of the supported notation",
                 disable_web_page_preview=True
             )
             return
