@@ -7,6 +7,9 @@ from telegram.ext import CommandHandler, CallbackQueryHandler
 from . import _strings as strings
 
 
+COMMAND_DESCRIPTION = "Show bot's abilities"
+
+
 class Page(typing.NamedTuple):
     page_title: str
     page_contents: str
@@ -32,6 +35,7 @@ class HelpPages:
     def register_handlers(self, runner):
         dispatcher = runner.updater.dispatcher
         dispatcher.add_handler(CommandHandler("help", self._command_callback))
+        runner.add_command_description('help', COMMAND_DESCRIPTION)
 
         page_ids = '|'.join(re.escape(page_id) for page_id in self.page_map)
         dispatcher.add_handler(CallbackQueryHandler(

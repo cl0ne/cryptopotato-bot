@@ -9,6 +9,8 @@ from .edit import do_edit
 from .show import do_list, list_show_page
 from .validation import ValidationError
 
+COMMAND_DESCRIPTION = 'Manage Daily Titles lists'
+
 
 def do_help(update: Update, _context: CallbackContext):
     update.effective_message.reply_markdown_v2(strings.MESSAGE__HELP)
@@ -47,7 +49,7 @@ def register_handlers(runner):
     from devpotato_bot.base_handlers import CallbackQueryHandler
     dispatcher = runner.updater.dispatcher
     dispatcher.add_handler(CommandHandler(
-        "titles_pool",
+        'titles_pool',
         command_callback,
         filters=~Filters.update.edited_message,
         extra_context={
@@ -55,6 +57,7 @@ def register_handlers(runner):
             'developer_ids': runner.developer_ids
         }
     ))
+    runner.add_command_description('titles_pool', COMMAND_DESCRIPTION)
     dispatcher.add_handler(CallbackQueryHandler(
         list_show_page,
         pattern='^titles:list:(prev|next)$',

@@ -3,6 +3,8 @@ from telegram.ext import CallbackContext
 
 from devpotato_bot.helpers import try_delete_message
 
+COMMAND_DESCRIPTION = 'Show current chat id'
+
 
 def command_callback(update: Update, context: CallbackContext):
     """Show current chat id, use command argument 'hide' to receive it as a private message"""

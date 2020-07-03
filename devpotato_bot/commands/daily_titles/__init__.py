@@ -5,32 +5,34 @@ def register_handlers(runner):
 
     from . import join, leave, start, stop
     for command, m in [
-        ("daily_titles_stop", stop),
-        ("daily_titles_start", start),
-        ("daily_titles_join", join),
-        ("daily_titles_leave", leave)
+        ('daily_titles_stop', stop),
+        ('daily_titles_start', start),
+        ('daily_titles_join', join),
+        ('daily_titles_leave', leave)
     ]:
         dispatcher.add_handler(DTCommandHandler(
             command,
             m.command_callback,
             extra_context={'session_factory': runner.session_factory}
         ))
+        runner.add_command_description(command, m.COMMAND_DESCRIPTION)
 
     from . import titles_pool
     titles_pool.register_handlers(runner)
 
     from . import show
     dispatcher.add_handler(DTCommandHandler(
-        "daily_titles",
+        'daily_titles',
         show.command_callback,
         filters=~Filters.update.edited_message,
         extra_context={'session_factory': runner.session_factory}
     ))
+    runner.add_command_description('daily_titles', show.COMMAND_DESCRIPTION)
 
     from devpotato_bot.base_handlers import CommandHandler
     from . import refresh_participants
     dispatcher.add_handler(CommandHandler(
-        "dt_participants_refresh",
+        'dt_participants_refresh',
         refresh_participants.command_callback,
         filters=~Filters.update.edited_message,
         extra_context={

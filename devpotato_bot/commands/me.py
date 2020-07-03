@@ -3,6 +3,8 @@ from telegram.ext import CallbackContext
 
 from ..helpers import deletes_caller_message
 
+COMMAND_DESCRIPTION = 'Announce your actions to the chat'
+
 
 @deletes_caller_message
 def command_callback(update: Update, context: CallbackContext):

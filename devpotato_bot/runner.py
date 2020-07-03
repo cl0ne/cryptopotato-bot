@@ -6,6 +6,7 @@ import telegram
 from dateutil import tz
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from telegram import Bot
 from telegram.ext import Updater
 
 # noinspection PyUnresolvedReferences
@@ -23,8 +24,10 @@ class Runner:
         self.session_factory = sessionmaker(bind=self.engine)
         self.developer_ids = set() if developer_ids is None else developer_ids
 
+        self._command_list = dict()
         from . import commands
         commands.register_handlers(self)
+        self.updater.bot.set_my_commands(self._command_list.items())
 
         dispatcher = self.updater.dispatcher
         from devpotato_bot.error_handler import create_callback
@@ -41,6 +44,10 @@ class Runner:
                                 name=Runner.DAILY_TITLES_JOB_NAME)
         else:
             logger.info('Daily titles assignment job was disabled')
+
+    def add_command_description(self, command, description):
+        """Add command to the list of commands to be shown to Telegram clients"""
+        self._command_list[command] = description
 
     def run(self):
         self.updater.start_polling()

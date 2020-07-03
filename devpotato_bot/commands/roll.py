@@ -4,6 +4,8 @@ from telegram.utils.helpers import escape_markdown
 
 from ..dice_parser import Dice, ParseError, ValueRangeError
 
+COMMAND_DESCRIPTION = 'Roll some dice (use dice notation)'
+
 
 def format_range_error(e: ValueRangeError):
     format_args = {'arg_name': e.arg_name, 'value': e.value}

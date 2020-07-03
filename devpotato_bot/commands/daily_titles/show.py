@@ -18,6 +18,8 @@ if TYPE_CHECKING:
 
 _logger = logging.getLogger(__name__)
 
+COMMAND_DESCRIPTION = 'Show titles assigned today'
+
 
 @check_is_activity_enabled
 @deletes_caller_message

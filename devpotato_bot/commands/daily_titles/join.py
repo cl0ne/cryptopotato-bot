@@ -12,6 +12,8 @@ from ...helpers import deletes_caller_message
 if TYPE_CHECKING:
     from . import models
 
+COMMAND_DESCRIPTION = 'Begin participation in Daily Titles Assignment'
+
 
 @check_is_activity_enabled
 @deletes_caller_message

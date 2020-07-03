@@ -9,6 +9,9 @@ from ..helpers import deletes_caller_message
 _logger = logging.getLogger(__name__)
 
 
+COMMAND_DESCRIPTION = 'Get yourself a random epigram'
+
+
 @run_async
 @deletes_caller_message
 def command_callback(update: Update, context: CallbackContext):
