@@ -9,6 +9,7 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'python-telegram-bot>=12.6',
+        'ujson>=3.0.0',
         'cachetools>=4',
         'python-dateutil>=2.8',
         'SQLAlchemy>=1.3',
