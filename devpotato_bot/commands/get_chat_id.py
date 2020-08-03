@@ -1,5 +1,6 @@
-from telegram import Update, Chat, error, Message
+from telegram import Update, Chat, error, Message, ParseMode
 from telegram.ext import CallbackContext
+from telegram.utils.helpers import escape_markdown
 
 from devpotato_bot.helpers import try_delete_message
 
@@ -12,18 +13,19 @@ def command_callback(update: Update, context: CallbackContext):
     hide = False
 
     if chat.type == Chat.PRIVATE:
-        message_text = f'id for this chat is equal to your id: {chat.id}'
+        message_text = f'id for this chat is equal to your id: `{chat.id}`'
     else:
-        message_text = f'id for {chat.type} "{chat.title}" is {chat.id}'
+        chat_title = escape_markdown(chat.title, version=2)
+        message_text = f'id for {chat.type} "{chat_title}" is `{chat.id}`'
         hide = context.args and context.args[0].lower() == 'hide'
     user_id = update.effective_user.id
     message: Message = update.effective_message
     if not hide:
-        message.reply_text(message_text)
+        message.reply_markdown_v2(message_text)
         return
     try_delete_message(message)
     try:
-        context.bot.send_message(user_id, message_text)
+        context.bot.send_message(user_id, message_text, parse_mode=ParseMode.MARKDOWN_V2)
     except (error.Unauthorized, error.BadRequest):
         pass
 
