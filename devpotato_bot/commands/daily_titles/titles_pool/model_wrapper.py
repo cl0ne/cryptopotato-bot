@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session, Query
 
 from devpotato_bot.commands.daily_titles import models
 
-DEFAULTS_POOL_ID = None
+DEFAULTS_POOL_ID = object()
 TITLE_LENGTH_LIMIT = 255
 PAGE_SIZE = 12
 
