@@ -7,9 +7,9 @@ from telegram.ext import CallbackContext
 from telegram.utils.helpers import escape_markdown
 
 from . import _strings as strings
-from .model_wrapper import DEFAULTS_POOL_ID, TitleType, TITLE_LENGTH_LIMIT
-from .validation import (_validate_pool_id, _validate_title_type, _validate_title_id, _check_modification_allowed,
-                         register_error, ValidationError)
+from .model_wrapper import DEFAULTS_POOL_ID, TITLE_LENGTH_LIMIT
+from .validation import _validate_pool, _validate_title_id, _check_modification_allowed
+from .validation import register_error, ValidationError
 from .._scoped_session import scoped_session
 
 
@@ -25,14 +25,11 @@ def do_edit(update: Update, context: CallbackContext) -> Optional[List[Validatio
         return
 
     errors = []
-    pool_args = map(str.lower, itertools.islice(context.args, 1, 4))
-    validators = (_validate_pool_id, _validate_title_type, _validate_title_id)
-    pool_id, title_type, title_id = [
-        validator(arg, errors) for arg, validator in zip(pool_args, validators)
-    ]  # type: int, TitleType, int
-
-    user_id = update.effective_user.id
-    _check_modification_allowed(pool_id, user_id, context, errors)
+    pool_id, title_type = _validate_pool(context.args, errors)
+    if pool_id is not None:
+        user_id = update.effective_user.id
+        _check_modification_allowed(pool_id, user_id, context, errors)
+    title_id = _validate_title_id(context.args[3], errors)
     new_content = ' '.join(itertools.islice(context.args, 4, None))
     new_content_len = len(new_content)
     if new_content_len > TITLE_LENGTH_LIMIT:

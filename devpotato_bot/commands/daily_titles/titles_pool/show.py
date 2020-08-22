@@ -1,15 +1,14 @@
-import itertools
+from typing import Optional, List
 
 from sqlalchemy.orm import Query, Session
 from telegram import Update, Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import CallbackContext
 from telegram.utils.helpers import escape_markdown
-from typing import Optional, List
 
-from .validation import _validate_pool_id, _validate_title_type, ValidationError
-from .model_wrapper import DEFAULTS_POOL_ID, paginate_query
-from .._scoped_session import scoped_session
 from . import _strings as strings
+from .model_wrapper import DEFAULTS_POOL_ID, paginate_query
+from .validation import _validate_pool, ValidationError
+from .._scoped_session import scoped_session
 
 MESSAGE_DATA_KEY = 'titles_pool.show'
 
@@ -26,13 +25,10 @@ def do_list(update: Update, context: CallbackContext) -> Optional[List[Validatio
         return
 
     errors = []
-    args = map(str.lower, itertools.islice(context.args, 1, 3))
-    validators = (_validate_pool_id, _validate_title_type)
-    validated_args = [validator(arg, errors) for arg, validator in zip(args, validators)]
+    pool_id, title_type = _validate_pool(context.args, errors)
     if errors:
         return errors
 
-    pool_id, title_type = validated_args
     with scoped_session(context.session_factory) as session:  # type: Session
         titles_query: Query = title_type.query_select(session, pool_id)
         titles, page, page_count = paginate_query(titles_query)

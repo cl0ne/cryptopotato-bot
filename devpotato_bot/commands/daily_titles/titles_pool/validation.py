@@ -1,3 +1,4 @@
+import itertools
 from typing import List, Optional
 
 from telegram.error import BadRequest
@@ -26,8 +27,13 @@ class ValidationError:
         return self.message.format(*escaped_args, **escaped_kwargs)
 
 
+def _validate_pool(args, errors) -> (Optional[int], Optional[TitleType]):
+    pool_id_str, title_type_str = itertools.islice(args, 1, 3)
+    return _validate_pool_id(pool_id_str, errors), _validate_title_type(title_type_str, errors)
+
+
 def _validate_pool_id(pool_id: str, errors: List[ValidationError]) -> Optional[int]:
-    if pool_id == 'defaults':
+    if pool_id.lower() == 'defaults':
         return DEFAULTS_POOL_ID
     try:
         return int(pool_id)
@@ -36,7 +42,7 @@ def _validate_pool_id(pool_id: str, errors: List[ValidationError]) -> Optional[i
 
 
 def _validate_title_type(title_type_prefix: str, errors: List[ValidationError]) -> Optional[TitleType]:
-    title_type = TitleType.from_prefix(title_type_prefix)
+    title_type = TitleType.from_prefix(title_type_prefix.lower())
     if title_type is None:
         register_error(errors, strings.ERROR__INVALID_TITLE_TYPE, title_type_prefix)
     return title_type

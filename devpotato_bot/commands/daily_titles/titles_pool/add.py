@@ -1,4 +1,3 @@
-import itertools
 from typing import Optional, List
 
 from sqlalchemy.orm import Session
@@ -7,9 +6,9 @@ from telegram.ext import CallbackContext
 from telegram.utils.helpers import escape_markdown
 
 from . import _strings as strings
-from .model_wrapper import DEFAULTS_POOL_ID, TitleType, TITLE_LENGTH_LIMIT
-from .validation import (_validate_pool_id, _validate_title_type, _check_modification_allowed,
-                         register_error, ValidationError)
+from .model_wrapper import DEFAULTS_POOL_ID, TITLE_LENGTH_LIMIT
+from .validation import _validate_pool, _check_modification_allowed
+from .validation import register_error, ValidationError
 from .._scoped_session import scoped_session
 
 
@@ -26,11 +25,7 @@ def do_add(update: Update, context: CallbackContext) -> Optional[List[Validation
         return
 
     errors = []
-    pool_args = map(str.lower, itertools.islice(context.args, 1, 3))
-    validators = (_validate_pool_id, _validate_title_type)
-    pool_id, title_type = [
-        validator(arg, errors) for arg, validator in zip(pool_args, validators)
-    ]  # type: int, TitleType
+    pool_id, title_type = _validate_pool(context.args, errors)
     from_defaults = False
     if len(context.args) > 3:
         source_pool = context.args[3].lower()
@@ -43,8 +38,9 @@ def do_add(update: Update, context: CallbackContext) -> Optional[List[Validation
         register_error(errors, strings.ERROR__ADD_MUST_BE_REPLY)
     if pool_id is DEFAULTS_POOL_ID and from_defaults:
         register_error(errors, strings.ERROR__COPY_TEMPLATES_TO_SELF)
-    user_id = update.effective_user.id
-    _check_modification_allowed(pool_id, user_id, context, errors)
+    if pool_id is not None:
+        user_id = update.effective_user.id
+        _check_modification_allowed(pool_id, user_id, context, errors)
     if errors:
         return errors
 
