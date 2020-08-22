@@ -47,7 +47,7 @@ def do_edit(update: Update, context: CallbackContext) -> Optional[List[Validatio
         if pool_id is not DEFAULTS_POOL_ID:
             error_message = strings.ERROR__NOT_FOUND_FOR_CHAT
             error_kwargs['chat_id'] = pool_id
-        return register_error([], error_message, **error_kwargs)
+        return [ValidationError(error_message, **error_kwargs)]
 
     original_text = escape_markdown(original_text, version=2)
     message_text = strings.MESSAGE__TITLE_EDITED.format(original_text=original_text)

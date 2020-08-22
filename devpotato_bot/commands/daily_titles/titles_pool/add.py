@@ -52,15 +52,15 @@ def do_add(update: Update, context: CallbackContext) -> Optional[List[Validation
                           if len(line) > TITLE_LENGTH_LIMIT]
         if too_long_lines:
             too_long_lines_str = ' '.join(map(str, too_long_lines))
-            return register_error([], strings.ERROR__TITLES_TOO_LONG,
-                                  limit=TITLE_LENGTH_LIMIT, titles=too_long_lines_str)
+            return [ValidationError(strings.ERROR__TITLES_TOO_LONG,
+                                    limit=TITLE_LENGTH_LIMIT, titles=too_long_lines_str)]
 
     with scoped_session(context.session_factory) as session:  # type: Session
         if pool_id is not DEFAULTS_POOL_ID:
             from ..models import GroupChat
             chat_data = GroupChat.get_by_id(session, pool_id)
             if chat_data is None or not chat_data.is_enabled:
-                return register_error([], strings.ERROR__ENABLE_ACTIVITY, pool_id)
+                return [ValidationError(strings.ERROR__ENABLE_ACTIVITY, pool_id)]
         if from_defaults:
             new_title_count = title_type.copy_defaults(session, pool_id)
         else:

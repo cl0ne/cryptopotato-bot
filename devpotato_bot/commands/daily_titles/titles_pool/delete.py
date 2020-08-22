@@ -44,7 +44,7 @@ def do_delete(update: Update, context: CallbackContext) -> Optional[List[Validat
         except ValueError:
             invalid_ids.append(i)
     if invalid_ids:
-        return register_error([], strings.ERROR__INVALID_TITLE_IDS, ids=' '.join(invalid_ids))
+        return [ValidationError(strings.ERROR__INVALID_TITLE_IDS, ids=' '.join(invalid_ids))]
     with scoped_session(context.session_factory) as session:  # type: Session
         deleted_count = title_type.delete(session, pool_id, None if delete_all else title_ids)
         session.commit()
