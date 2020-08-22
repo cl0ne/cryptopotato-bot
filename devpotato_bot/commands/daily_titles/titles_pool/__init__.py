@@ -13,10 +13,12 @@ COMMAND_DESCRIPTION = 'Manage Daily Titles lists'
 
 
 def do_help(update: Update, _context: CallbackContext):
+    """Show help for title pools management actions."""
     update.effective_message.reply_markdown_v2(strings.MESSAGE__HELP)
 
 
 def unknown_action(update: Update, context: CallbackContext):
+    """"Provide feedback to the user when unknown action requested."""
     action_name = escape_markdown(context.args[0], version=2)
     message_text = strings.MESSAGE__UNKNOWN_ACTION.format(action=action_name)
     update.effective_message.reply_markdown_v2(message_text)
@@ -32,7 +34,7 @@ _actions = {
 
 
 def command_callback(update: Update, context: CallbackContext):
-    """Announce current daily titles to the chat."""
+    """Provides title pools management (CRUD)."""
     if context.args:
         action_name = context.args[0].lower()
         action = _actions.get(action_name, unknown_action)

@@ -15,7 +15,11 @@ MESSAGE_DATA_KEY = 'titles_pool.show'
 
 
 def do_list(update: Update, context: CallbackContext) -> Optional[List[ValidationError]]:
-    """list chat_id|defaults title_type"""
+    """Show list of titles from the specified pool.
+
+    Expected arguments in context.args:
+    'list' chat_id|'defaults' title_type
+    """
     message: Message = update.effective_message
     if len(context.args) < 3:
         message.reply_markdown_v2(strings.format_more_args(strings.HELP_LIST))
@@ -40,6 +44,7 @@ def do_list(update: Update, context: CallbackContext) -> Optional[List[Validatio
 
 
 def list_show_page(update, context: CallbackContext):
+    """"Show next/previous page of the titles list"""
     callback_query: CallbackQuery = update.callback_query
     message_data: dict = context.chat_data.setdefault(MESSAGE_DATA_KEY, {})
     message_id = callback_query.message.message_id

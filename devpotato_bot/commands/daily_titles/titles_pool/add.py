@@ -14,7 +14,11 @@ from .._scoped_session import scoped_session
 
 
 def do_add(update: Update, context: CallbackContext) -> Optional[List[ValidationError]]:
-    """add chat_id title_type [defaults]"""
+    """Add new titles to the specified pool.
+
+    Expected arguments in context.args:
+    'add' chat_id|'defaults' title_type ['defaults']
+    """
     message: Message = update.effective_message
     if len(context.args) < 3:
         reply_text = strings.MESSAGE__NEED_MORE_ARGS.format(action_help=strings.HELP_ADD)

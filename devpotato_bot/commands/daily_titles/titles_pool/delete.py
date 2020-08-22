@@ -14,7 +14,11 @@ from .._scoped_session import scoped_session
 
 
 def do_delete(update: Update, context: CallbackContext) -> Optional[List[ValidationError]]:
-    """delete chat_id title_type all|(title_id+)"""
+    """Delete titles from the specified pool.
+
+    Expected arguments in context.args:
+    'delete' chat_id|'defaults' title_type 'all'|(title_id+)
+    """
     message: Message = update.effective_message
     if len(context.args) < 4:
         message.reply_markdown_v2(strings.format_more_args(strings.HELP_DELETE))

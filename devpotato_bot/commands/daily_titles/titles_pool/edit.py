@@ -14,7 +14,11 @@ from .._scoped_session import scoped_session
 
 
 def do_edit(update: Update, context: CallbackContext) -> Optional[List[ValidationError]]:
-    """edit chat_id title_type title_id new_content..."""
+    """Change text of the title from the specified pool.
+
+    Expected arguments in context.args:
+    'edit' chat_id|'defaults' title_type title_id new_content...
+    """
     message: Message = update.effective_message
     if len(context.args) < 5:
         message.reply_markdown_v2(strings.format_more_args(strings.HELP_EDIT))
