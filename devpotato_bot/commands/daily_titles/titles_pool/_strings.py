@@ -19,6 +19,7 @@ ERROR__ENABLE_ACTIVITY = 'Daily Titles Assignment activity must be enabled for c
 ERROR__INVALID_TITLE_IDS = 'These are not valid title ids: {ids}'
 ERROR__INVALID_TITLE_ID = 'Unknown value for title\\_id: {}'
 ERROR__INVALID_TITLE_TYPE = 'Unknown value for title\\_type: {}'
+ERROR__UNAVAILABLE_FOR_PRIVATE_CHATS = 'Daily Titles Assignment is not available for private chats'
 ERROR__INVALID_CHAT_ID = 'Unknown value for chat\\_id: {}'
 
 HELP_LIST = (
@@ -89,7 +90,8 @@ MESSAGE__HELP = (
     'Action arguments:\n'
     '\n'
     '\\- `chat_id` is a *numeric id* of a Telegram chat \\(you can get it with `/get_chat_id` '
-    'command from corresponding chat\\)\\. When referring to global template titles use word *defaults* instead\\.\n'
+    'command from corresponding chat\\)\\. Current chat id can be replaced with word *this*\\. '
+    'When referring to global template titles use word *defaults* instead\\.\n'
     '\n'
     '\\- `title_type` specifies one of two available title types: *inevitable* or *shuffled* \\(_tip_: '
     'you can specify only the first letter of the type name\\)'

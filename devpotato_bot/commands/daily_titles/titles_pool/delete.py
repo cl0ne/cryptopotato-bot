@@ -24,7 +24,7 @@ def do_delete(update: Update, context: CallbackContext) -> Optional[List[Validat
         return
 
     errors = []
-    pool_id, title_type = _validate_pool(context.args, errors)
+    pool_id, title_type = _validate_pool(context.args, update.effective_chat, errors)
     if pool_id is not None:
         user_id = update.effective_user.id
         _check_modification_allowed(pool_id, user_id, context, errors)

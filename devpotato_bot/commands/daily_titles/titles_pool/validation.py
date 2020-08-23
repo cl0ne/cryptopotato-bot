@@ -1,6 +1,7 @@
 import itertools
-from typing import List, Optional
+from typing import List, Optional, Iterable
 
+from telegram import Chat
 from telegram.error import BadRequest
 from telegram.utils.helpers import escape_markdown
 
@@ -27,14 +28,23 @@ class ValidationError:
         return self.message.format(*escaped_args, **escaped_kwargs)
 
 
-def _validate_pool(args, errors) -> (Optional[int], Optional[TitleType]):
+def _validate_pool(args: Iterable[str],
+                   chat: Chat,
+                   errors: List[ValidationError]
+                   ) -> (Optional[int], Optional[TitleType]):
     pool_id_str, title_type_str = itertools.islice(args, 1, 3)
-    return _validate_pool_id(pool_id_str, errors), _validate_title_type(title_type_str, errors)
+    return _validate_pool_id(pool_id_str, chat, errors), _validate_title_type(title_type_str, errors)
 
 
-def _validate_pool_id(pool_id: str, errors: List[ValidationError]) -> Optional[int]:
-    if pool_id.lower() == 'defaults':
+def _validate_pool_id(pool_id: str, chat: Chat, errors: List[ValidationError]) -> Optional[int]:
+    pool_id = pool_id.lower()
+    if pool_id == 'defaults':
         return DEFAULTS_POOL_ID
+    if pool_id == 'this':
+        if chat.type == Chat.PRIVATE:
+            register_error(errors, strings.ERROR__UNAVAILABLE_FOR_PRIVATE_CHATS)
+            return
+        return chat.id
     try:
         return int(pool_id)
     except ValueError:

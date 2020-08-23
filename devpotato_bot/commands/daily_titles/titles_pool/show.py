@@ -25,7 +25,7 @@ def do_list(update: Update, context: CallbackContext) -> Optional[List[Validatio
         return
 
     errors = []
-    pool_id, title_type = _validate_pool(context.args, errors)
+    pool_id, title_type = _validate_pool(context.args, update.effective_chat, errors)
     if errors:
         return errors
 

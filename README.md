@@ -114,7 +114,7 @@ To make this possible `/titles_pool` command with actions was implemented. Actio
 
 Action arguments:
 
-- `chat_id` is a __numeric id__ of a Telegram chat (you can get it with `/get_chat_id` command from the corresponding chat). When referring to global template titles use word "defaults" instead. Note that only users specified in DEVELOPER_IDS are able to edit template titles.
+- `chat_id` is a __numeric id__ of a Telegram chat (you can get it with `/get_chat_id` command from the corresponding chat). You can also use keyword "this" as an alias for current chat id. When referring to global template titles use word "defaults" instead. Note that only users specified in DEVELOPER_IDS are able to edit template titles.
 
 - `title_type` specifies one of two available title types: *inevitable* or *shuffled* (_tip_: you can specify only the first letter of the type name).
 
