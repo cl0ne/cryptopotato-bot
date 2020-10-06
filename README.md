@@ -65,7 +65,7 @@ More info about dice notation and its variations:
 - [roll20 wiki](https://wiki.roll20.net/Dice_Reference)
 - [openroleplaying.org](https://web.archive.org/web/20061031103919/http://www.openroleplaying.org/tools/dieroller/index.cgi)
 
-### Daily Titles Assignment
+### Daily Titles
 
 This activity allows members of group chats to receive random personal titles (e.g. "employee of the day", "follows the white rabbit") every day in the morning. There are two types of titles: _inevitable_ and _shuffled_.
 
@@ -116,7 +116,7 @@ Action arguments:
 
 - `chat_id` is a __numeric id__ of a Telegram chat (you can get it with `/get_chat_id` command from the corresponding chat). You can also use keyword "this" as an alias for current chat id. When referring to global template titles use word "defaults" instead. Note that only users specified in DEVELOPER_IDS are able to edit template titles.
 
-- `title_type` specifies one of two available title types: *inevitable* or *shuffled* (_tip_: you can specify only the first letter of the type name).
+- `title_type` specifies one of two available title types: *inevitable* or *shuffled* (_tip_: you can specify only the prefix of the type name).
 
 
 ### Utility commands

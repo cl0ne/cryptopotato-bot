@@ -1,50 +1,53 @@
-__ACTIVITY_NAME = '📣Daily 🏅Titles 🎲Assignment'
+__ACTIVITY_NAME = '📣 Daily 🏅Titles 🎲'
 
 MESSAGE__DISABLED_FOR_PRIVATE_CHATS = (
     f'*{__ACTIVITY_NAME} is not available for private chats*.\n'
     '\n'
-    'It can be enabled for group chats and channels where bot is present.'
+    'It can be enabled for group chats and channels where bot is present'
+    ' by their administrators.'
 )
 
 MESSAGE__ENABLE_REQUIRES_ADMIN = (
-    f'{__ACTIVITY_NAME} can be enabled only by administrators'
+    f'{__ACTIVITY_NAME} can be enabled only by the chat administrators'
 )
 MESSAGE__DISABLE_REQUIRES_ADMIN = (
-    f'{__ACTIVITY_NAME} can be disabled only by administrators'
+    f'{__ACTIVITY_NAME} can be disabled only by the chat administrators'
 )
 
 MESSAGE__NOT_ENABLED = (
     f'{__ACTIVITY_NAME} <b>is disabled</b> for this chat.\n'
     '\n'
-    'It can be enabled by administrator via /daily_titles_start command'
+    'Chat administrators can enable it with /daily_titles_start command'
 )
 POPUP__NOT_ENABLED = f'{__ACTIVITY_NAME} is disabled for this chat'
 
 MESSAGE__ALREADY_ENABLED = (
     f'{__ACTIVITY_NAME} <b>is already enabled</b> for this chat\n'
     '\n'
-    'Administrators can disable it via /daily_titles_stop command'
+    '/daily_titles_stop to disable it\n'
+    '/titles_pool to view and edit list of title choices for this chat'
 )
 MESSAGE__ENABLED = (
     f'{__ACTIVITY_NAME} <b>was enabled</b> for this chat\n'
     '\n'
-    'Administrators can disable it via /daily_titles_stop command'
+    '/daily_titles_stop to disable it\n'
+    '/titles_pool to view and edit list of title choices for this chat'
 )
 
 MESSAGE__DISABLED = (
     f'{__ACTIVITY_NAME} <b>was disabled</b> for this chat\n'
     '\n'
-    'Administrators can enable it via /daily_titles_start command'
+    'Chat administrators can enable it back with /daily_titles_start command'
 )
 MESSAGE__ALREADY_DISABLED = (
     f'{__ACTIVITY_NAME} <b>is already disabled</b> for this chat\n'
     '\n'
-    'Administrators can enable it via /daily_titles_start command'
+    'Chat administrators can enable it back with /daily_titles_start command'
 )
 MESSAGE__WAS_NEVER_ENABLED = (
     f'{__ACTIVITY_NAME} <b>was never enabled</b> for this chat\n'
     '\n'
-    'Administrators can enable it via /daily_titles_start command'
+    'Chat administrators can enable it with /daily_titles_start command'
 )
 
 POPUP__JOINED = f'✊ You have joined {__ACTIVITY_NAME}'

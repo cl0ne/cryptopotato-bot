@@ -46,6 +46,8 @@ def command_callback(update: Update, context: CallbackContext):
 
 
 def send_titles_message(chat: Chat, chat_data: 'models.GroupChat'):
+    # To avoid excessive notifications for participants who got a title we initially send a message
+    # with participant names in plain text and then edit sent message to add inline mentions to names
     do_edit = False
     if chat_data.last_titles is None:
         titles_text = strings.NO_PARTICIPANTS

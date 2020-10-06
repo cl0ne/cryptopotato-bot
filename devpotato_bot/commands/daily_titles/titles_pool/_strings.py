@@ -6,21 +6,23 @@ NO_TITLES_FOUND = '*none found*'
 ERROR__ADD_MUST_BE_REPLY = (
     '*add* action should be used in reply to a message with new titles \\(each title on its own line\\)'
 )
-ERROR__WRONG_SOURCE_POOL_NAME = 'unexpected value "{}" instead of "defaults"'
-ERROR__COPY_TEMPLATES_TO_SELF = 'template title cannot be copied to template titles, sorry'
-ERROR__CANNOT_EDIT_TEMPLATES = 'you cannot modify template titles'
-ERROR__EDITABLE_BY_CHAT_ADMIN_ONLY = 'Only chat administrators can modify titles for chat'
-ERROR__BOT_NOT_PRESENT_IN_CHAT = 'Bot is not present in chat with id `{}`'
-ERROR__TITLE_TOO_LONG = 'new title text is too long \\(\\>{limit} chars\\): {length}'
-ERROR__TITLES_TOO_LONG = 'these title texts are too long \\(\\>{limit} chars\\): {titles}'
+ERROR__WRONG_SOURCE_POOL_NAME = 'Unexpected value "{}", did you mean `defaults`?'
+ERROR__COPY_TEMPLATES_TO_SELF = '*Template title* cannot be copied to *template titles*, sorry'
+ERROR__CANNOT_EDIT_TEMPLATES = 'You cannot modify *template titles*'
+ERROR__EDITABLE_BY_CHAT_ADMIN_ONLY = 'Only *chat administrators* can modify titles for chat'
+ERROR__BOT_NOT_PRESENT_IN_CHAT = '*Bot is not present* in chat with id `{}`'
+ERROR__TITLE_TOO_LONG = 'New title text is *too long* \\(\\>{limit} chars\\): {length}'
+ERROR__TITLES_TOO_LONG = 'These title texts are *too long* \\(\\>{limit} chars\\): {titles}'
 ERROR__NOT_FOUND_FOR_CHAT = 'Title of type \\({type}\\) with id `{title_id}` for chat id `{chat_id}` not found'
 ERROR__NOT_FOUND_IN_TEMPLATES = 'Title of type \\({type}\\) with id `{title_id}` not found in global templates'
-ERROR__ENABLE_ACTIVITY = 'Daily Titles Assignment activity must be enabled for chat with id `{}`'
-ERROR__INVALID_TITLE_IDS = 'These are not valid title ids: {ids}'
-ERROR__INVALID_TITLE_ID = 'Unknown value for title\\_id: {}'
-ERROR__INVALID_TITLE_TYPE = 'Unknown value for title\\_type: {}'
-ERROR__UNAVAILABLE_FOR_PRIVATE_CHATS = 'Daily Titles Assignment is not available for private chats'
-ERROR__INVALID_CHAT_ID = 'Unknown value for chat\\_id: {}'
+ERROR__ENABLE_ACTIVITY = (
+    'Daily Titles assignment must be enabled for chat with id `{}` \\(use /daily\\_titles\\_start command\\)'
+)
+ERROR__INVALID_TITLE_IDS = 'These are *not valid title ids*: {ids}'
+ERROR__INVALID_TITLE_ID = 'Unknown value for `title_id`: {}'
+ERROR__INVALID_TITLE_TYPE = 'Unknown value for `title_type`: {}'
+ERROR__UNAVAILABLE_FOR_PRIVATE_CHATS = 'Daily Titles assignment is not available for *private chats*'
+ERROR__INVALID_CHAT_ID = 'Unknown value for `chat_id`: {}'
 
 HELP_LIST = (
     '*list* `chat_id title_type`\n'
@@ -52,7 +54,7 @@ HELP_EDIT = (
 )
 
 MESSAGE__UNKNOWN_ACTION = (
-    '"{action}" is not a known action, use */titles\\_pool help*'
+    '"{action}" is not a known action, use `/titles_pool help`'
     ' to get list of available actions'
 )
 MESSAGE__NEED_MORE_ARGS = (
@@ -89,10 +91,10 @@ MESSAGE__HELP = (
     '\n'
     'Action arguments:\n'
     '\n'
-    '\\- `chat_id` is a *numeric id* of a Telegram chat \\(you can get it with `/get_chat_id` '
+    '\\- `chat_id` is a *numeric id* of a Telegram chat \\(you can get it with /get\\_chat\\_id '
     'command from corresponding chat\\)\\. Current chat id can be replaced with word *this*\\. '
     'When referring to global template titles use word *defaults* instead\\.\n'
     '\n'
     '\\- `title_type` specifies one of two available title types: *inevitable* or *shuffled* \\(_tip_: '
-    'you can specify only the first letter of the type name\\)'
+    'you can specify only the prefix of the type name\\)'
 )

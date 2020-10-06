@@ -8,7 +8,7 @@ from ._scoped_session import scoped_session
 from .models import GroupChat
 from ...helpers import admin_only, deletes_caller_message
 
-COMMAND_DESCRIPTION = 'Enable Daily Titles Assignment for this chat'
+COMMAND_DESCRIPTION = 'Enable Daily Titles assignment for this chat'
 
 
 @admin_only(strings.MESSAGE__ENABLE_REQUIRES_ADMIN)
