@@ -86,6 +86,13 @@ NO_PARTICIPANTS = (
     "\n"
 )
 
+NO_TITLES_IN_POOL = (
+    "The list of titles to choose from was *empty* for this chat\n"
+    "\n"
+    "Use /titles\\_pool to *view* and *edit* list of title choices for"
+    f" {__ACTIVITY_NAME}"
+)
+
 MESSAGE__DAILY_TITLES = (
     f"*Today's {__ACTIVITY_NAME}*\n"
     "\n"

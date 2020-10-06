@@ -22,7 +22,6 @@ class GroupChat(Base):
     name = Column(String(length=255), nullable=False)
     is_enabled = Column(Boolean, nullable=False)
     is_migration_conflicted = Column(Boolean, nullable=False, default=False, server_default=false())
-    copy_default_titles = Column(Boolean, nullable=False, default=True)
     last_triggered = Column(UTCDateTime)
     last_titles = Column(Text)
     last_titles_plain = Column(Text)
@@ -46,27 +45,6 @@ class GroupChat(Base):
         ).filter(
             Participant.is_active, Participant.chat == self
         ).order_by(Participant.id).all()
-
-    def do_copy_default_titles(self):
-        self.copy_default_titles = False
-        session: Session = Session.object_session(self)
-        from . import InevitableTitle, ShuffledTitle
-        self._copy_template_titles(session, self.chat_id, InevitableTitle, True)
-        self._copy_template_titles(session, self.chat_id, ShuffledTitle, False)
-        session.commit()
-
-    @staticmethod
-    def _copy_template_titles(
-            session: Session, chat_id: int,
-            title_type: Type[Union[InevitableTitle, ShuffledTitle]],
-            is_inevitable: bool
-    ) -> int:
-        from devpotato_bot.commands.daily_titles.models import TitleTemplate
-        select_columns = [TitleTemplate.text, literal(chat_id).label('chat_id')]
-        insert_columns = [title_type.text, title_type.chat_id]
-        source_query = session.query(*select_columns).filter_by(is_inevitable=is_inevitable)
-        ins = title_type.__table__.insert().from_select(insert_columns, source_query)
-        return session.execute(ins).rowcount
 
     def dequeue_shuffled_titles(self, limit: int) -> List[ShuffledTitle]:
         if not limit:
@@ -106,7 +84,6 @@ class GroupChat(Base):
         return ('<GroupChat('
                 f'chat_id={self.chat_id}, '
                 f'name="{self.name}", '
-                f'copy_default_titles={self.copy_default_titles}, '
                 f'is_enabled={self.is_enabled}, '
                 f'last_triggered="{self.last_triggered}", '
                 f'last_titles="{self.last_titles}", '

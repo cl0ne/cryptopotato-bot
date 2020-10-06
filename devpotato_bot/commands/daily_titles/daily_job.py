@@ -25,9 +25,6 @@ def job_callback(context: CallbackContext):
     chats: List[GroupChat] = chat_query.all()
 
     _logger.info('Enqueued %d chat(s)', len(chats))
-    chats_without_titles = (c for c in chats if c.copy_default_titles)
-    for c in chats_without_titles:
-        c.do_copy_default_titles()
 
     now = datetime.now(timezone.utc)
     for c in chats:

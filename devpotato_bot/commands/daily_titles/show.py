@@ -30,13 +30,11 @@ def command_callback(update: Update, context: CallbackContext):
     bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     from .models import GroupChat
     chat_data: GroupChat = context.daily_titles_group_chat
-    if chat_data.copy_default_titles:
-        chat_data.do_copy_default_titles()
     now = datetime.now(timezone.utc)
     need_new_titles = (
             chat_data.last_triggered is None
             or now.date() > chat_data.last_triggered.date()
-            or (chat_data.last_titles is None
+            or (not chat_data.last_titles
                 and (now - chat_data.last_triggered).seconds >= 60 * 2)
     )
     if need_new_titles:
@@ -51,6 +49,8 @@ def send_titles_message(chat: Chat, chat_data: 'models.GroupChat'):
     do_edit = False
     if chat_data.last_titles is None:
         titles_text = strings.NO_PARTICIPANTS
+    elif chat_data.last_titles == '':
+        titles_text = strings.NO_TITLES_IN_POOL
     else:
         titles_text = strings.MESSAGE__DAILY_TITLES.format(assigned_titles=chat_data.last_titles_plain)
         do_edit = True

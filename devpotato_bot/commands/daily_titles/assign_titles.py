@@ -1,5 +1,5 @@
 import itertools
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Iterator
 
 from sqlalchemy.orm import Session
 from telegram import Chat, User, error, ChatMember
@@ -44,6 +44,8 @@ def _get_titles_assignment(chat: GroupChat):
 
 def _get_assigned_users(tg_chat: Chat, chat: GroupChat, user_ids):
     users = []
+    if not user_ids:
+        return users
     participants_new_data, load_from_db = [], {}
     for participant_id, user_id in user_ids:
         new_user_data = dict(id=participant_id)
@@ -67,14 +69,16 @@ def _get_assigned_users(tg_chat: Chat, chat: GroupChat, user_ids):
     session.commit()
     loaded_names = session.query(
         Participant.id, Participant.full_name
-    ).filter(Participant.id.in_(load_from_db)).all()
+    ).filter(
+        Participant.id.in_(load_from_db)
+    ).all()
     for participant_id, participant_name in loaded_names:
         load_from_db[participant_id].full_name = participant_name
     return users
 
 
-def _format_assignment_lines(participants, titles, lines_plain, lines_mention):
-    for user, title in zip(participants, titles):
+def _format_assignment_lines(participants: Iterator, titles: list, lines_plain: list, lines_mention: list):
+    for title, user in zip(titles, participants):
         user_name = escape_markdown(user.full_name, version=2)
         title_text = escape_markdown(title.text, version=2)
         lines_plain.append(f' {user_name} \\- {title_text}')
@@ -87,15 +91,13 @@ def _build_titles_text(
         shuffled_titles: List[ShuffledTitle]
 ) -> Tuple[str, str]:
     lines_mention, lines_plain = [], []
-    _format_assignment_lines(participants, inevitable_titles, lines_plain, lines_mention)
+    participants_iter = iter(participants)
 
+    _format_assignment_lines(participants_iter, inevitable_titles, lines_plain, lines_mention)
     if inevitable_titles and shuffled_titles:
         lines_plain.append('')
         lines_mention.append('')
-
-    inevitable_titles_count = len(inevitable_titles)
-    participants_for_shuffled = itertools.islice(participants, inevitable_titles_count, None)
-    _format_assignment_lines(participants_for_shuffled, shuffled_titles, lines_plain, lines_mention)
+    _format_assignment_lines(participants_iter, shuffled_titles, lines_plain, lines_mention)
 
     return '\n'.join(lines_plain), '\n'.join(lines_mention)
 
