@@ -6,7 +6,7 @@ setup(
     description='Telegram bot for cryptopotato chat',
     packages=['devpotato_bot'],
 
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     install_requires=[
         'python-telegram-bot>=12.6',
         'ujson>=3.0.0',
