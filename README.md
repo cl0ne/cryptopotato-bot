@@ -11,7 +11,7 @@ Simple [Telegram](https://telegram.org) bot for `cryptopotato` chat. To use this
 
 ## Setup
 ### Before first run
-Use `init_db.py` script to create new database, it requires `DB_URL` to be set (see [Running bot](#running-bot) section for details).
+Run `python -m devpotato_bot.init_db` to create a new database, make sure package `devpotato_bot` is present in your `sys.path` and `DB_URL` is set (see [Running bot](#running-bot) section for details). Module expects Alembic config file `alembic.ini` to be present in the working directory. Use `ALEMBIC_CFG` environment variable to specify different path.
 
 ### Database migrations
 To apply schema changes to existing database, [use Alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#running-our-first-migration). E.g., to get latest version of the schema use command `alembic upgrade head`. Details on specifying database URL can be found [here](alembic/README.md).

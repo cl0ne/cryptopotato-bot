@@ -11,7 +11,7 @@ case "${1}" in
     ;;
     'init_db')
         source /opt/bot/venv/bin/activate
-        python /opt/bot/init_db.py
+        python -m devpotato_bot.init_db
     ;;
     'migrate_db')
         source /opt/bot/venv/bin/activate
