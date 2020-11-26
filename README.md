@@ -17,21 +17,35 @@ Use `init_db.py` script to create new database, it requires `DB_URL` to be set (
 To apply schema changes to existing database, [use Alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#running-our-first-migration). E.g., to get latest version of the schema use command `alembic upgrade head`. Details on specifying database URL can be found [here](alembic/README.md).
 
 ### Running bot
-You're required to provide following environment variables:
+You're required to provide the following environment variables:
 - `BOT_TOKEN`: bot's authorization token, you can get one for your bot from [BotFather](https://telegram.me/botfather);
 - `DB_URL`: [SQLAlchemy database URL](https://docs.sqlalchemy.org/en/13/core/engines.html#engine-configuration).
 
-If you want bot send error reports directly to your private messages, set `DEVELOPER_IDS` environment variable to a comma-separated list of corresponding user ids. You can get yours, for example, from [userinfobot](https://t.me/userinfobot) (it supports retrieving ids from forwarded messages too, but it works I suppose only when message's author has enabled linking back to their account in forwarded messages privacy settings). [This question on SO](https://stackoverflow.com/questions/32683992/find-out-my-own-user-id-for-sending-a-message-with-telegram-api) has more options.
+Below you can find a list of optional environment variables recognized by the bot.
 
-Daily titles assignment job is enabled by default; this can be changed by setting `TITLES_DAILY_JOB_ENABLED` environment variable to 0 or 1 (disable and enable, respectively).
+- `DEVELOPER_IDS`
 
-N.B. To receive error reports from bot you have to initiate a conversation with the bot first. For example, by issuing `/start` command to it in direct messages or unblocking the bot if you blocked it before.
+    If you want bot to send error reports directly to your private messages, set `DEVELOPER_IDS` to a comma-separated list of recipient user ids. You can get yours, for example, from [userinfobot](https://t.me/userinfobot) (it supports retrieving ids from forwarded messages too, but it works I suppose only when message's author has enabled linking back to their account in forwarded messages privacy settings). [This question on SO](https://stackoverflow.com/questions/32683992/find-out-my-own-user-id-for-sending-a-message-with-telegram-api) has more options.
 
-To start bot you have to run specify package name with [`-m` option](https://docs.python.org/3/using/cmdline.html#cmdoption-m) to Python interpreter: 
+    N.B. In order to receive error reports from bot you have to initiate a conversation with the bot first. For example, by issuing `/start` command to it in direct messages or by unblocking the bot if you have blocked it before.
+
+- `DAILY_TITLES_JOB_ENABLED`
+
+    Daily titles assignment job is enabled by default, to explicitly disable or enable it set `DAILY_TITLES_JOB_ENABLED` to 0 or 1, respectively.
+
+- `DAILY_TITLES_JOB_TIME`
+
+    By default, daily titles assignment job is scheduled to run at midnight (timezone depends on `BOT_TIMEZONE` variable), set `DAILY_TITLES_JOB_TIME` to a string in the format `HH[:MM]` to specify a different time. For example, specifying either `09:00` or `9` changes the job's start time to 9 AM.
+
+- `BOT_TIMEZONE`
+
+    Bot's local timezone is UTC by default; to choose a different one, set `BOT_TIMEZONE` to one of the timezone names supported by [`pytz`](https://pypi.org/project/pytz/). For example, `Europe/Kiev`, `US/Pacific`, `Asia/Shanghai`, etc.
+
+To start bot you have to pass its package name with [`-m` option](https://docs.python.org/3/using/cmdline.html#cmdoption-m) to Python interpreter:
 ```
 python -m devpotato_bot
 ```
-Make sure package `devpotato_bot` is present in the `sys.path` (e.g., by adding its parent directory to `PYTHONPATH` environment variable or by setting working directory to it). 
+Make sure package `devpotato_bot` is present in the `sys.path` (e.g., by adding its parent directory to `PYTHONPATH` environment variable or by changing working directory to it).
 
 ## Current Features
 
@@ -53,7 +67,7 @@ Dice can be rolled with `/roll` (or `/r` for short) command followed by formula 
 The basic formula in the dice notation is `AdB`. `A` is a number of dice to be rolled (can be omitted if 1). `B` specifies the number of sides the die has, you can use `%` for percentile dice (i.e. `d100`). The maximum number of rolls is 100, the biggest allowed dice has 120 sides.
 
 The basic formula can be extended with modifiers:
- 
+
 Modifier to keep/discard the lowest/highest `k` results. Keep and discard is indicated by modifier's sign: `+` and `-`, omitted sign is equivalent to `+` (keep). It's followed by letter `L` or `H`  and a positive number to specify which results to be kept/discarded and how many. For example, `10d6-L6` discards 6 lowest results, `10d6+L4` and `10d6L4` keep 4 lowest, `10d6+H5` and `10d6H5` keep 5 highest, `10d6-H3` discards 3 highest.
 
 Additive modifier, a number with a sign that is added to (or subtracted from) total roll result. For example, `d6+5` adds 5 to a single roll result and `5d20L3-2` will subtract 2 from the sum of the 3 lowest results.
@@ -73,7 +87,9 @@ The inevitable titles are always assigned first and are assigned every day in th
 
 The activity has to be activated first for the chat by chat administrator with `/daily_titles_start` command (and can be deactivated any time with `/daily_titles_stop`). To participate in the activity, chat member can use `/daily_titles_join` command, command `/daily_titles_leave` allows to cease participation (there are also join/leave buttons under messages with assigned titles). Any user who leaves the chat will be automatically removed from participation.
 
-Every day at 9AM (Kyiv time) bot will post message with assigned titles in chats where activity is active. You can get today's assigned titles with `/daily_titles` command. It will make attempt to assign titles if there were no titles assigned today (activity was enabled after 9AM or there were no participants at that time).
+Every day at a specified time bot will post messages with assigned titles in chats where the activity is active. You can tune this behavior with environment variables described in the [Running bot](#running-bot) section.
+
+Today's assigned titles can be shown on demand with `/daily_titles` command. Which will also make attempt to assign titles if there were no titles assigned today in the current chat. This occurs when the automatic title assignment was disabled, the activity was enabled after the job was running or there were no participants at that time.
 
 Of course, some titles appropriate for members of one chat can be inappropriate for another (they can be seen as not funny or even offensive). That means that there has to be some sort of customization of available titles for every chat. There also has to be a global list of title templates so that every chat can have "default" set of titles.
 

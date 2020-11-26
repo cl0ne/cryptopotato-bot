@@ -65,8 +65,7 @@ class HelpPages:
         ]
         return dict(text=current_page.page_contents,
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    parse_mode=ParseMode.MARKDOWN_V2,
-                    disable_web_page_preview=True)
+                    parse_mode=ParseMode.MARKDOWN_V2)
 
     def _get_page_button(self, p: Page, disabled_page: Page):
         if p == disabled_page:

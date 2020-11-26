@@ -2,7 +2,7 @@ import logging
 import subprocess
 
 from telegram import Update, ChatAction, Bot, ParseMode, Chat
-from telegram.ext import CallbackContext, run_async
+from telegram.ext import CallbackContext
 
 from ..helpers import deletes_caller_message
 
@@ -12,7 +12,6 @@ _logger = logging.getLogger(__name__)
 COMMAND_DESCRIPTION = 'Get yourself a random epigram'
 
 
-@run_async
 @deletes_caller_message
 def command_callback(update: Update, context: CallbackContext):
     """Get random epigram from `fortune`."""

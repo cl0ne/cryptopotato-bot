@@ -7,7 +7,8 @@ def register_handlers(runner):
 
     dispatcher.add_handler(CommandHandler(
         'fortune', fortune.command_callback,
-        filters=~Filters.update.edited_message
+        filters=~Filters.update.edited_message,
+        run_async=True
     ))
     runner.add_command_description('fortune', fortune.COMMAND_DESCRIPTION)
 

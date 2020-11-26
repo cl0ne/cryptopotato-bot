@@ -39,8 +39,7 @@ def command_callback(update: Update, context: CallbackContext):
             message.reply_markdown_v2(
                 "Oops, couldn't decide what kind of roll you want to make\\.\n"
                 "\n"
-                "See /help for the detailed description of the supported notation",
-                disable_web_page_preview=True
+                "See /help for the detailed description of the supported notation"
             )
             return
         except ValueRangeError as e:
@@ -72,4 +71,4 @@ def command_callback(update: Update, context: CallbackContext):
         lines.append(' \\+ ⋯ ')
     lines.extend(('\\) \\= ', str(roll_total)))
     text = ''.join(lines)
-    message.reply_markdown_v2(text, quote=False, disable_web_page_preview=True)
+    message.reply_markdown_v2(text, quote=False)

@@ -30,10 +30,13 @@ services:
     image: "sevoid/cryptopotato-bot:latest"
     restart: always
     environment:
+      - WAIT_BEFORE_START=5
       - DB_URL=sqlite:////data/db.sqlite
       - BOT_TOKEN=
       - DEVELOPER_IDS=
-      - WAIT_BEFORE_START=5
+      - DAILY_TITLES_JOB_ENABLED=
+      - DAILY_TITLES_JOB_TIME=
+      - BOT_TIMEZONE=
     volumes:
       - data:/data
     networks:

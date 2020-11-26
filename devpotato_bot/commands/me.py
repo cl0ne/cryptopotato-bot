@@ -15,4 +15,4 @@ def command_callback(update: Update, context: CallbackContext):
     name = '<b>***{}</b>'.format(update.effective_user.mention_html())
     text = '{} {}'.format(name, status)
     chat: Chat = update.effective_chat
-    context.bot.send_message(chat.id, text, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
+    context.bot.send_message(chat.id, text, parse_mode=ParseMode.HTML)

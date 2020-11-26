@@ -11,7 +11,7 @@ setup(
         'python-telegram-bot>=12.6',
         'ujson>=3.0.0',
         'cachetools>=4',
-        'python-dateutil>=2.8',
+        'pytz>=2020.4',
         'SQLAlchemy>=1.3',
         'alembic>=1.4'
     ],
