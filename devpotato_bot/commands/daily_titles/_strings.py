@@ -1,5 +1,7 @@
 __ACTIVITY_NAME = '📣 Daily 🏅Titles 🎲'
 
+STREAK_MARK = '❗️'
+
 MESSAGE__DISABLED_FOR_PRIVATE_CHATS = (
     f'*{__ACTIVITY_NAME} is not available for private chats*.\n'
     '\n'
