@@ -1,18 +1,10 @@
-from sqlalchemy import Column, Integer, String, BigInteger, ForeignKey
-from sqlalchemy.orm import relationship
 
-from .base import Base
-from .group_chat import GroupChat
+from .title import TitleFromGroupChat, Base
 
 
-class InevitableTitle(Base):
+class InevitableTitle(TitleFromGroupChat):
     __tablename__ = f'{Base.TABLENAME_PREFIX}inevitable_titles'
-
-    id = Column(Integer, primary_key=True)
-    chat_id = Column(BigInteger, ForeignKey(GroupChat.chat_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    text = Column(String(length=255), nullable=False)
-
-    chat = relationship('GroupChat', back_populates='inevitable_titles')
+    __group_chat_back_populates__ = 'inevitable_titles'
 
     def __repr__(self):
         return ('<InevitableTitle('

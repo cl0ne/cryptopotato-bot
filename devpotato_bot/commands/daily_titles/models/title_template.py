@@ -1,18 +1,16 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Boolean
 
-from .base import Base
+from .title import Title, Base
 
 
-class TitleTemplate(Base):
+class TitleTemplate(Title):
     __tablename__ = f'{Base.TABLENAME_PREFIX}title_templates'
 
-    id = Column(Integer, primary_key=True)
-    text = Column(String(length=255), nullable=False)
     is_inevitable = Column(Boolean, nullable=False)
 
     def __repr__(self):
         return ('<TitleTemplate('
-                f'id={self.chat_id}, '
+                f'id={self.id}, '
                 f'text="{self.text}", '
                 f'is_inevitable="{self.is_inevitable}"'
                 ')>')
