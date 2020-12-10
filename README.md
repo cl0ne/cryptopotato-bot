@@ -2,7 +2,7 @@
 Simple [Telegram](https://telegram.org) bot for `cryptopotato` chat. To use this bot in Telegram, [click here](https://telegram.me/devpotato_bot).
 
 ## Requirements
-* Python version 3.6+ ([type hints](https://www.python.org/dev/peps/pep-0484/) and [f-strings](https://www.python.org/dev/peps/pep-0498/) are used)
+* Python version 3.8+
 * [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
 * [cachetools](https://github.com/tkem/cachetools/)
 * [SQLAlchemy](https://www.sqlalchemy.org/)
