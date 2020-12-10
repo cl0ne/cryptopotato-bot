@@ -1,6 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Column, Integer
 
 from .title import TitleFromGroupChat, Base
+
+if TYPE_CHECKING:
+    from .group_chat import GroupChat
 
 
 class ShuffledTitle(TitleFromGroupChat):

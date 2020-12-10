@@ -1,18 +1,17 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Union, Type
-
-if TYPE_CHECKING:
-    from . import InevitableTitle, Participant, ShuffledTitle
-
 import random
-from typing import List, Tuple
+from typing import TYPE_CHECKING
 
-from sqlalchemy import Column, String, BigInteger, Boolean, Text, false, literal
+from sqlalchemy import Column, String, BigInteger, Boolean, Text, false
 from sqlalchemy.orm import relationship, Session
 
 from .base import Base
 from .utc_datetime import UTCDateTime
+
+if TYPE_CHECKING:
+    from typing import Optional, List, Tuple
+    from . import Participant, ShuffledTitle, InevitableTitle
 
 
 class GroupChat(Base):

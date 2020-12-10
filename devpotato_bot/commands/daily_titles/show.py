@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import telegram
 from sqlalchemy.orm import Session
-from telegram import Update, ParseMode, Chat, ChatAction, Bot, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, ParseMode, Chat, ChatAction, Bot
 from telegram.ext import CallbackContext
 
 from . import _strings as strings

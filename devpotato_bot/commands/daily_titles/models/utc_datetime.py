@@ -1,13 +1,18 @@
 import datetime
+from typing import Optional
 
 from sqlalchemy import TypeDecorator, DateTime
+from sqlalchemy.engine import Dialect
+
+OptDateTime = Optional[datetime.datetime]
 
 
 class UTCDateTime(TypeDecorator):
-    """Provide timezone-aware (UTC) datetime values when fetched from database"""
+    """Makes datetime values timezone-aware (UTC) when fetched from database"""
+
     impl = DateTime
 
-    def process_result_value(self, value, dialect):
+    def process_result_value(self, value: OptDateTime, dialect: Dialect) -> OptDateTime:
         if value is not None:
             value = value.replace(tzinfo=datetime.timezone.utc)
         return value
