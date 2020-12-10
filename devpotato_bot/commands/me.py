@@ -15,4 +15,8 @@ def command_callback(update: Update, context: CallbackContext):
     name = '<b>***{}</b>'.format(update.effective_user.mention_html())
     text = '{} {}'.format(name, status)
     chat: Chat = update.effective_chat
-    context.bot.send_message(chat.id, text, parse_mode=ParseMode.HTML)
+    message_kwargs = dict(chat_id=chat.id, text=text, parse_mode=ParseMode.HTML)
+    reply_to = message.reply_to_message
+    if reply_to is not None:
+        message_kwargs['reply_to_message_id'] = reply_to.message_id
+    context.bot.send_message(**message_kwargs)

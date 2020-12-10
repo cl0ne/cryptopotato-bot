@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generic, TypeVar
 
 from sqlalchemy import tuple_
+from sqlalchemy.orm import Session
 from telegram import error, ChatMember
 from telegram.utils.helpers import escape_markdown, mention_markdown
 
@@ -17,7 +18,6 @@ from ...sample import sample_items_inplace
 if TYPE_CHECKING:
     from datetime import datetime
     from typing import List, Tuple, Union, Optional, Dict, Iterable
-    from sqlalchemy.orm import Session
     from telegram import Chat, User
     from .models import GroupChat
 

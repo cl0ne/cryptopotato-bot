@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='devpotato-bot',
-    version='0.6.0',
+    version='0.6.1',
     description='Telegram bot for cryptopotato chat',
     packages=['devpotato_bot'],
 
