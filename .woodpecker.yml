@@ -1,0 +1,81 @@
+---
+pipeline:
+  lint-shell:
+    image: sevoid/linter:latest
+    commands:
+      - ./.ci/lint-shell.sh
+    group: lint
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - master
+          - release-*
+          - archive/*
+
+  lint-yaml:
+    image: sevoid/linter:latest
+    commands:
+      - ./.ci/lint-yaml.sh
+    group: lint
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - master
+          - release-*
+          - archive/*
+
+  lint-python:
+    image: sevoid/linter:latest
+    commands:
+      - sudo pip install --no-cache-dir -q -r ./.ci/pylint_requirements.txt -e .
+      - ./.ci/lint_python.py
+    group: lint
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - master
+          - release-*
+          - archive/*
+
+  docker-dev:
+    image: plugins/docker:17
+    secrets:
+      - docker_username
+      - docker_password
+    repo: sevoid/cryptopotato-bot
+    group: build
+    tags:
+      - dev-${DRONE_COMMIT:0:7}
+    when:
+      event:
+        - push
+      branch:
+        - dev-*
+        - feature-*
+        - feature/*
+
+  docker-release:
+    image: plugins/docker:17
+    secrets:
+      - docker_username
+      - docker_password
+    repo: sevoid/cryptopotato-bot
+    group: build
+    tags:
+      - latest
+      - ${DRONE_TAG}
+    when:
+      branch:
+        - master
+        - release-*
+      event:
+        - push
+        - tag
+
+# vim:set syntax=yaml ts=2 sw=2 et:

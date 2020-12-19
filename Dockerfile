@@ -10,8 +10,7 @@ RUN apk upgrade --no-cache
 RUN apk add --no-cache build-base openssl openssl-dev libffi libffi-dev sqlite
 RUN python -m venv venv \
  && . ./venv/bin/activate \
- && pip install -r requirements.txt \
- && pip install -e .
+ && pip install --no-cache-dir -r requirements.txt -e .
 
 # ===
 

@@ -1,3 +1,4 @@
+---
 version: "2.4"
 
 x-first-run:
@@ -53,4 +54,3 @@ volumes:
 networks:
   cryptopotato:
     name: cryptopotato
-
