@@ -35,7 +35,7 @@ pipeline:
     pull: true
     commands:
       - sudo pip install -q -r ./.ci/pylint_requirements.txt -e .
-      - ./.ci/lint_python.py || exit 0
+      - ./.ci/lint_python.py
     group: lint
     when:
       event:
