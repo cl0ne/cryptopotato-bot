@@ -2,6 +2,7 @@
 pipeline:
   lint-shell:
     image: sevoid/linter:latest
+    pull: true
     commands:
       - ./.ci/lint-shell.sh
     group: lint
@@ -16,6 +17,7 @@ pipeline:
 
   lint-yaml:
     image: sevoid/linter:latest
+    pull: true
     commands:
       - ./.ci/lint-yaml.sh
     group: lint
@@ -30,9 +32,10 @@ pipeline:
 
   lint-python:
     image: sevoid/linter:latest
+    pull: true
     commands:
-      - sudo pip install --no-cache-dir -q -r ./.ci/pylint_requirements.txt -e .
-      - ./.ci/lint_python.py
+      - sudo pip install -q -r ./.ci/pylint_requirements.txt -e .
+      - ./.ci/lint_python.py || exit 0
     group: lint
     when:
       event:
@@ -43,8 +46,26 @@ pipeline:
           - release-*
           - archive/*
 
-  docker-dev:
+  test-unittest:
+    image: python:3-alpine
+    pull: true
+    commands:
+      - apk add -q --no-cache build-base openssl openssl-dev libffi libffi-dev sqlite
+      - pip install -q -r requirements.txt -e .
+      - python -m unittest discover -s tests -p "test_*.py"
+    group: test
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - master
+          - release-*
+          - archive/*
+
+  publish-dev:
     image: plugins/docker:17
+    pull: true
     secrets:
       - docker_username
       - docker_password
@@ -60,8 +81,9 @@ pipeline:
         - feature-*
         - feature/*
 
-  docker-release:
+  publish-release:
     image: plugins/docker:17
+    pull: true
     secrets:
       - docker_username
       - docker_password
