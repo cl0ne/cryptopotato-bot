@@ -14,6 +14,7 @@ class GivenTitle(Base):
 
     @declared_attr
     def participant_id(cls):
+        # pylint: disable=no-self-argument
         return Column(
             Integer,
             ForeignKey(Participant.id, onupdate="CASCADE", ondelete="CASCADE"),
@@ -22,6 +23,7 @@ class GivenTitle(Base):
 
     @declared_attr
     def participant(cls):
+        # pylint: disable=no-self-argument
         return relationship("Participant")
 
     given_on = Column(UTCDateTime, nullable=False)

@@ -15,9 +15,11 @@ class Title(Base):
 
 class TitleFromGroupChat(Title):
     __abstract__ = True
+    __group_chat_back_populates__ = 'titles_from_groupchat'
 
     @declared_attr
     def chat_id(cls):
+        # pylint: disable=no-self-argument
         return Column(
             BigInteger,
             ForeignKey(GroupChat.chat_id, onupdate="CASCADE", ondelete="CASCADE"),
@@ -26,6 +28,7 @@ class TitleFromGroupChat(Title):
 
     @declared_attr
     def chat(cls):
+        # pylint: disable=no-self-argument
         return relationship(
             "GroupChat", back_populates=cls.__group_chat_back_populates__
         )

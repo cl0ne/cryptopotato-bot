@@ -36,6 +36,7 @@ class MissingUserWrapper:
 
 
 if TYPE_CHECKING:
+    # pylint: disable=used-before-assignment
     ParticipantFormatter = Union[User, MissingUserWrapper]
 
 

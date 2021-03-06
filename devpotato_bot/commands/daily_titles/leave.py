@@ -51,7 +51,7 @@ def button_callback(update: Update, context: CallbackContext):
 
 def _participation_leave(user: User, chat_data: 'models.GroupChat') -> bool:
     """Remove user from daily titles assignment participants of the chat"""
-    participant: models.Participant = chat_data.get_participant(user.id)
+    participant: 'models.Participant' = chat_data.get_participant(user.id)
     state_changed = participant is not None and participant.is_active
     if state_changed:
         participant.full_name = user.full_name
