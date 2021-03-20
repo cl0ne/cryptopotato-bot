@@ -13,7 +13,11 @@ _logger = logging.getLogger(__name__)
 @cached(cache=TTLCache(maxsize=256, ttl=60*60))
 def get_admin_ids(bot, chat_id):
     """Returns a list of admin IDs for a given chat. Results are cached for 1 hour."""
-    return [admin.user.id for admin in bot.get_chat_administrators(chat_id)]
+    admin_ids = [admin.user.id for admin in bot.get_chat_administrators(chat_id)]
+    _logger.info(
+        'Administrator ids requested for chat %d', chat_id
+    )
+    return admin_ids
 
 
 class _AdminOnlyHandlerDecorator:
@@ -26,7 +30,19 @@ class _AdminOnlyHandlerDecorator:
             user_id = update.effective_user.id
             chat: Chat = update.effective_chat
             message: Message = update.effective_message
-            if chat.type != Chat.PRIVATE and user_id not in get_admin_ids(context.bot, message.chat_id):
+            is_private_chat = chat.type == Chat.PRIVATE
+            # sent by anonymous group chat admin or in a channel post
+            is_requested_by_chat = chat == message.sender_chat
+            is_denied = not(
+                is_private_chat
+                or is_requested_by_chat
+                or user_id in get_admin_ids(context.bot, chat.id)
+            )
+            if is_denied:
+                _logger.info(
+                    'User %d from chat %d denied from using an admin-only command: %s',
+                    user_id, chat.id, func.__module__
+                )
                 message.reply_text(self.message_text)
                 return
             return func(update, context)
