@@ -19,8 +19,10 @@ class GroupChat(Base):
 
     chat_id = Column(BigInteger, primary_key=True)
     name = Column(String(length=255), nullable=False)
-    is_enabled = Column(Boolean, nullable=False)
-    is_migration_conflicted = Column(Boolean, nullable=False, default=False, server_default=false())
+    is_enabled = Column(Boolean(create_constraint=True), nullable=False)
+    is_migration_conflicted = Column(
+        Boolean(create_constraint=True), nullable=False, default=False, server_default=false()
+    )
     last_triggered = Column(UTCDateTime)
     last_titles = Column(Text)
     last_titles_plain = Column(Text)

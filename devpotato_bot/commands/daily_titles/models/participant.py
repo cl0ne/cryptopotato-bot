@@ -14,11 +14,20 @@ class Participant(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(BigInteger, nullable=False)
-    chat_id = Column(BigInteger, ForeignKey(GroupChat.chat_id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    chat_id = Column(
+        BigInteger,
+        ForeignKey(GroupChat.chat_id, onupdate="CASCADE", ondelete="CASCADE"),
+        nullable=False
+    )
     full_name = Column(String(length=255), nullable=False)
     username = Column(String(length=32), nullable=True)
-    is_active = Column(Boolean, nullable=False)
-    is_missing = Column(Boolean, nullable=False, default=False, server_default=expr.false())
+    is_active = Column(Boolean(create_constraint=True), nullable=False)
+    is_missing = Column(
+        Boolean(create_constraint=True),
+        nullable=False,
+        default=False,
+        server_default=expr.false()
+    )
 
     chat = relationship('GroupChat', back_populates='participants')
 

@@ -6,7 +6,7 @@ from .title import Title, Base
 class TitleTemplate(Title):
     __tablename__ = f'{Base.TABLENAME_PREFIX}title_templates'
 
-    is_inevitable = Column(Boolean, nullable=False)
+    is_inevitable = Column(Boolean(create_constraint=True), nullable=False)
 
     def __repr__(self):
         return ('<TitleTemplate('
