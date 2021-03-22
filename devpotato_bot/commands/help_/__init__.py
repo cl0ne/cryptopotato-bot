@@ -45,7 +45,7 @@ class HelpPages:
 
     def _command_callback(self, update: Update, _context: CallbackContext):
         """Send a message when the command /help is issued."""
-        update.message.reply_markdown_v2(**self._format_page(self.start_page))
+        update.message.reply_text(**self._format_page(self.start_page))
 
     def _button_callback(self, update: Update, context: CallbackContext):
         """Switch help page."""
