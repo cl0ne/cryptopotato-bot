@@ -50,13 +50,12 @@ class HelpPages:
     def _button_callback(self, update: Update, context: CallbackContext):
         """Switch help page."""
         query: CallbackQuery = update.callback_query
-        callback_query: CallbackQuery = update.callback_query
         if context.match[1] == self.ignored_button_data:
             return
         requested_page = self.page_map.get(context.match[1])
         if requested_page is None:
             return
-        callback_query.edit_message_text(**self._format_page(requested_page))
+        query.edit_message_text(**self._format_page(requested_page))
 
     def _format_page(self, current_page: Page):
         buttons = [
