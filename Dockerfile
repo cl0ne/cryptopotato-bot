@@ -8,6 +8,7 @@ WORKDIR /opt/bot
 
 RUN apk upgrade --no-cache
 RUN apk add --no-cache build-base openssl openssl-dev libffi libffi-dev sqlite
+# hadolint ignore=SC1091
 RUN python -m venv venv \
  && . ./venv/bin/activate \
  && pip install --no-cache-dir -r requirements.txt -e .

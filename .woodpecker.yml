@@ -30,6 +30,21 @@ pipeline:
           - release-*
           - archive/*
 
+  lint-dockerfile:
+    image: sevoid/linter:latest
+    pull: true
+    commands:
+      - hadolint --no-fail --config ./.ci/hadolint.yaml Dockerfile
+    group: lint
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - master
+          - release-*
+          - archive/*
+
   lint-python:
     image: sevoid/linter:latest
     pull: true
