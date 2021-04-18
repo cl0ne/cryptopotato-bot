@@ -7,8 +7,7 @@ T = TypeVar('T')
 def sample_items_inplace(items: MutableSequence[T], sample_size: int, item_limit: int = None):
     """Moves sampled elements to the end of items list.
 
-    When sample size is equal to the size of the items list it
-    shuffles items in-place.
+    When the sample size is equal to the size of the items list, it merely shuffles items in-place.
     """
     n = len(items)
     if item_limit is None:
