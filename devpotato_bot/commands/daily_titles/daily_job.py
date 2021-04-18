@@ -19,6 +19,7 @@ def job_callback(context: CallbackContext):
     from sqlalchemy.orm import Session
     session: Session = job.context()
 
+    from .title_formatter import get_titles_text
     from .models import GroupChat, Participant
     chat_query = session.query(GroupChat).filter(GroupChat.is_enabled)
     chat_query = chat_query.filter(GroupChat.participants.any(Participant.is_active))
@@ -54,9 +55,10 @@ def job_callback(context: CallbackContext):
             continue
 
         from .assign_titles import assign_titles
-        assign_titles(session, c, tg_chat, now)
+        given_titles = assign_titles(session, c, tg_chat, now)
+        title_texts = get_titles_text(*given_titles)
         try:
-            send_titles_message(tg_chat, c)
+            send_titles_message(tg_chat, c, *title_texts)
         except telegram.error.Unauthorized as e:
             _logger.info(
                 _disable_activity_if_kicked_message,

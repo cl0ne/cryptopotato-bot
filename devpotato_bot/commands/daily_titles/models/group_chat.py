@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Column, String, BigInteger, Boolean, Text, false
+from sqlalchemy import Column, BigInteger, Boolean, Integer, String, Text, false
 from sqlalchemy.orm import relationship, Session
 
 from .base import Base
@@ -24,6 +24,7 @@ class GroupChat(Base):
         Boolean(create_constraint=True), nullable=False, default=False, server_default=false()
     )
     last_triggered = Column(UTCDateTime)
+    last_given_titles_count = Column(Integer)
     last_titles = Column(Text)
     last_titles_plain = Column(Text)
 
@@ -38,14 +39,29 @@ class GroupChat(Base):
     def get_participant(self, user_id) -> Optional[Participant]:
         return self.participants.filter_by(user_id=user_id).one_or_none()
 
-    def get_participant_ids(self) -> List[Tuple[int, int]]:
+    def get_participants_ordered(self, ordered_ids: List[int]) -> List[Participant]:
         session: Session = Session.object_session(self)
         from .participant import Participant
-        return session.query(
-            Participant.id, Participant.user_id
+        query = session.query(
+            Participant
         ).filter(
-            Participant.is_active, Participant.chat == self
-        ).order_by(Participant.id).all()
+            Participant.id.in_(ordered_ids)
+        )
+        participants_map = {p.id: p for p in query.all()}
+        return [participants_map[i] for i in ordered_ids]
+
+    def get_participant_ids(self) -> List[int]:
+        session: Session = Session.object_session(self)
+        from .participant import Participant
+        query = session.query(
+            Participant.id
+        ).filter(
+            Participant.is_active,
+            Participant.chat == self
+        ).order_by(
+            Participant.id
+        )
+        return [i for (i, ) in query]
 
     def dequeue_shuffled_titles(self, limit: int) -> List[ShuffledTitle]:
         if not limit:
@@ -87,6 +103,5 @@ class GroupChat(Base):
                 f'name="{self.name}", '
                 f'is_enabled={self.is_enabled}, '
                 f'last_triggered="{self.last_triggered}", '
-                f'last_titles="{self.last_titles}", '
-                f'last_titles_plain="{self.last_titles_plain}"'
+                f'last_given_titles_count="{self.last_given_titles_count}"'
                 ')>')
