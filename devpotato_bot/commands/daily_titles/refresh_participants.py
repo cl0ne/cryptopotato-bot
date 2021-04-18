@@ -5,7 +5,7 @@ from telegram import Bot, User, ChatMember, error
 from telegram import Update, Chat
 from telegram.ext import CallbackContext
 
-from devpotato_bot.commands.daily_titles._scoped_session import scoped_session
+from ._scoped_session import scoped_session
 from devpotato_bot.helpers import developer_only
 
 _logger = logging.getLogger(__name__)

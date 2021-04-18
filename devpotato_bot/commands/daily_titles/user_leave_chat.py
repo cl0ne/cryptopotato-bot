@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from telegram import Update, Chat, Message, User
 from telegram.ext import CallbackContext
 
-from devpotato_bot.commands.daily_titles._scoped_session import scoped_session
+from ._scoped_session import scoped_session
 
 
 def message_callback(update: Update, context: CallbackContext):

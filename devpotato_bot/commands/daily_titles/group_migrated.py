@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from telegram import Update, Chat, Message
 from telegram.ext import CallbackContext
 
-from devpotato_bot.commands.daily_titles._scoped_session import scoped_session
+from ._scoped_session import scoped_session
 
 _logger = logging.getLogger(__name__)
 

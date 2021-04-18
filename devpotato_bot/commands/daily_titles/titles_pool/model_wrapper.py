@@ -4,7 +4,7 @@ from typing import Optional, Union, List, Iterable, Type
 from sqlalchemy import literal
 from sqlalchemy.orm import Session, Query
 
-from devpotato_bot.commands.daily_titles import models
+from .. import models
 
 DEFAULTS_POOL_ID = object()
 TITLE_LENGTH_LIMIT = 255
