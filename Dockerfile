@@ -11,6 +11,7 @@ RUN apk add --no-cache build-base openssl openssl-dev libffi libffi-dev sqlite
 # hadolint ignore=SC1091
 RUN python -m venv venv \
  && . ./venv/bin/activate \
+ && python -m pip install --upgrade pip wheel \
  && pip install --no-cache-dir -r requirements.txt -e .
 
 # ===
