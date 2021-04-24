@@ -25,8 +25,6 @@ class GroupChat(Base):
     )
     last_triggered = Column(UTCDateTime)
     last_given_titles_count = Column(Integer)
-    last_titles = Column(Text)
-    last_titles_plain = Column(Text)
 
     participants = relationship('Participant', back_populates='chat', lazy='dynamic')
     inevitable_titles = relationship('InevitableTitle', back_populates='chat', lazy='dynamic')
