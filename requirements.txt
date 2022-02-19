@@ -1,6 +1,6 @@
 python-telegram-bot==13.4.1
-ujson==4.0.2
-pytz>=2021.1
-cachetools==4.2.1
+ujson==5.1.0
+pytz>=2021.3
+cachetools==5.0.0
 SQLAlchemy==1.4.11
 alembic==1.5.8

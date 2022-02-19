@@ -9,9 +9,9 @@ setup(
     python_requires='>=3.8',
     install_requires=[
         'python-telegram-bot>=13.0',
-        'ujson>=3.0.0',
-        'cachetools>=4',
-        'pytz>=2020.4',
+        'ujson>=5.0.0',
+        'cachetools>=5',
+        'pytz>=2021.3',
         'SQLAlchemy>=1.3',
         'alembic>=1.4'
     ],
