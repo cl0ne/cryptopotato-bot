@@ -1,5 +1,5 @@
 python-telegram-bot==13.4.1
-ujson==5.1.0
+ujson==5.2.0
 pytz>=2021.3
 cachetools==5.0.0
 SQLAlchemy==1.4.11
